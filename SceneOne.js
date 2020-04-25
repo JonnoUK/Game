@@ -53,7 +53,7 @@ class SceneOne extends Phaser.Scene {
         gameState.cursors = this.input.keyboard.createCursorKeys();
     
         gameState.gameActive = true;
-        
+        gameState.attacking = false;
         const debugGraphics = this.add.graphics().setAlpha(0);
 
         gameState.playerDisplay = this.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');;
@@ -140,9 +140,17 @@ update() {
         /** Check if attacking... */
         if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
             attackNpc(npcId['boss2']);
+            gameState.attacking = true;
+            gameState.player.anims.play('playAtt', true);
+            gameState.player.setScale(1);
+        } else if (gameState.attacking == true) {
+            this.time.delayedCall(400, ()=> {
+                gameState.attacking = false;
+                gameState.player.setScale(1.2);
+            });
         }
 
-        if (gameState.cursors.space.isDown) {
+        if(gameState.attacking == true) {
             gameState.player.anims.play('playAtt', true);
         }
 
@@ -155,27 +163,35 @@ update() {
         /** Player Controls */
         if(gameState.cursors.left.isDown){
             gameState.player.flipX = true;
-            gameState.player.anims.play('playAtt', true); 
+            if(!gameState.attacking) {
+                gameState.player.anims.play('walk', true); 
+            }
             gameState.player.setVelocityX(-70)
             
         } else if (gameState.cursors.right.isDown) {
             gameState.player.flipX = false;
-            gameState.player.anims.play('walk', true); 
+            if(!gameState.attacking) {
+                gameState.player.anims.play('walk', true); 
+            }
             gameState.player.body.setVelocityX(70)
         } else {
             gameState.player.body.setVelocityX(0)
         }
         if(gameState.cursors.up.isDown){
-            gameState.player.anims.play('walk', true);
+            if(!gameState.attacking) {
+                gameState.player.anims.play('walk', true);
+            }
             gameState.player.setVelocityY(-70)
             
         } else if (gameState.cursors.down.isDown) {
-            gameState.player.anims.play('walk', true);
+            if(!gameState.attacking) {
+                gameState.player.anims.play('walk', true);
+            }
             gameState.player.body.setVelocityY(70)
         } else {
             gameState.player.body.setVelocityY(0)
         }
-        if(!gameState.cursors.left.isDown && !gameState.cursors.right.isDown && !gameState.cursors.up.isDown && !gameState.cursors.down.isDown ){
+        if(!gameState.attacking && !gameState.cursors.left.isDown && !gameState.cursors.right.isDown && !gameState.cursors.up.isDown && !gameState.cursors.down.isDown ){
             gameState.player.anims.play('idle', true);
         }
 
