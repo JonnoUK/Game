@@ -38,46 +38,38 @@ function attackNpc(npcId) {
 }
 
 
-function chasePlayer(npcId, id, range) {
+function chasePlayer(npcId) {
     var playerX = gameState.player.x
     var playerY = gameState.player.y
 
     //If player larger
         if(playerX > npcId.x) {
-            if(npcId.direction = 'left') {
-                npcId.flipX = true;
+            if(npcId.direction == 'left') {
+                npcId.flipX = !npcId.flipX;
+                npcId.direction = 'right';
             } else {
-                npcId.flipX = false;
+                npcId.flipX = npcId.flipX;
             }
                 npcId.setVelocityX(40)
                 npcId.play('walkBoss', true);
                 
     //If player smaller
         } else if (playerX < npcId.x) {
-            if(npcId.direction = 'right') {
-                npcId.flipX = true;
+            if(npcId.direction == 'right') {
+                npcId.flipX = !npcId.flipX;
+                npcId.direction = 'left';
             } else {
-                npcId.flipX = false;
+                npcId.flipX = npcId.flipX
             }
             npcId.setVelocityX(-40)
             npcId.play('walkBoss', true);
         }
     //If player larger
         if(playerY > npcId.y) {
-            if(npcId.direction = 'left') {
-                npcId.flipX = true;
-            } else {
-                npcId.flipX = false;
-            }
             npcId.setVelocityY(40)
             npcId.play('walkBoss', true);
     //If player smaller
         } else if (playerY < npcId.y) {
-            if(npcId.direction = 'right') {
-                npcId.flipX = true;
-            } else {
-                npcId.flipX = false;
-            }
             npcId.setVelocityY(-40)
             npcId.play('walkBoss', true);
         }
@@ -102,22 +94,23 @@ function loadNPCs(game, scene) {
             npcId[bosses[i][0]].alive = true;
             npcId[bosses[i][0]].range = bosses[i][4];
             npcId[bosses[i][0]].setInteractive();
-            npcId[bosses[i][0]].direction = [bosses[i][5], bosses[i][6]];
 
             if(bosses[i][5] == 'left') {
-                npcId[bosses[i][0]].direction = 'left';
                 if(bosses[i][6] == 'right') {
                     npcId[bosses[i][0]].flipX = true;
+                    npcId[bosses[i][0]].direction = 'left';
                    
                 } else {
                     npcId[bosses[i][0]].flipX = false;
+                    npcId[bosses[i][0]].direction = 'left';
                 }
             } else if(bosses[i][5] == 'right') {
-                
                 if(bosses[i][6] == 'left') {
                     npcId[bosses[i][0]].flipX = true;
+                    npcId[bosses[i][0]].direction = 'right';
                 } else {
                     npcId[bosses[i][0]].flipX = false;
+                    npcId[bosses[i][0]].direction = 'right';
                 }
             }
         }
