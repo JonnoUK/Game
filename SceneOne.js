@@ -13,14 +13,13 @@ class SceneOne extends Phaser.Scene {
         loadNPCs(this, this.sceneId, 1);
         loadPlayer(this, this.sceneId, 1);
         loadFloorObjects(this, this.sceneId, 1);
-
+        this.load.html('nameform', 'assets/text/loginform.html');
         this.load.tilemapTiledJSON('map', 'assets/Map.json');
         this.load.image('tiles', 'assets/tiles.png', {frameWidth: 16, frameHeight: 16});
     }
 
     create() {
         /* LOAD MAP */
-        gameState.cursors = this.input.keyboard.createCursorKeys();
         map = this.make.tilemap({key: 'map'});
         const groundTiles = map.addTilesetImage('tiles');
         var interactive = map.createDynamicLayer('Interactive', groundTiles, 0, 0);
@@ -39,15 +38,12 @@ class SceneOne extends Phaser.Scene {
         loadPlayer(this, this.sceneId, 2);
         loadNPCs(this, this.sceneId, 2);
 
-
-
         /*LOAD FINAL LAYER OF MAP*/
         var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
         loadFloorObjects(this, this.sceneId, 2);
         loadPlayer(this, this.sceneId, 3);
-        
         
 
          this.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
@@ -68,10 +64,6 @@ class SceneOne extends Phaser.Scene {
          this.physics.add.overlap(gameState.player, onFloorObj[7],  () => {
             inventoryManage(2, this, 7);
          });
-
-
-
-
 
 
         const debugGraphics = this.add.graphics().setAlpha(0.5);        
@@ -95,7 +87,8 @@ class SceneOne extends Phaser.Scene {
 
         createAnims(this);
 
-        
+       
+
     }
 
 update() {

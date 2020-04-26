@@ -4,12 +4,43 @@ class MainScreen extends Phaser.Scene {
     }
 
     create() {
+        gameState.cursors = this.input.keyboard.createCursorKeys();
         this.add.text(350, 350, "Click to Start")
+
+        this.add.text(10, 10, 'Enter your name:', { font: '32px Courier', fill: '#ffffff' });
+        var keySpace;
+    gameState.textEntry = this.add.text(10, 50, '', { font: '32px Courier', fill: '#ffff00' });
+
+    // keys = this.input.keyboard.addKeys('A,B,C');
+
+    keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    var keyBackspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE);
+
+    this.input.keyboard.on('keydown', function (event) {
+
+        if (event.keyCode === 8 && gameState.textEntry.text.length > 0)
+        {
+            gameState.textEntry.text = gameState.textEntry.text.substr(0, gameState.textEntry.text.length - 1);
+        }
+        else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode < 90))
+        {
+            gameState.textEntry.text += event.key;
+        }
+
+    });
+/*
         this.input.on('pointerdown', () => {
             gameState.hitpoints = 100;
             this.scene.stop();            
             this.scene.start('SceneOne')
-        });
+        });*/
+    }
+
+    update() {
+        if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)) {
+
+
+        }
     }
 }
 
