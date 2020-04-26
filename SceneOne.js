@@ -12,6 +12,8 @@ class SceneOne extends Phaser.Scene {
         gameState.yloc = 250;
         loadNPCs(this, this.sceneId, 1);
         loadPlayer(this, this.sceneId, 1);
+        loadFloorObjects(this, this.sceneId, 1);
+
         this.load.tilemapTiledJSON('map', 'assets/Map.json');
         this.load.image('tiles', 'assets/tiles.png', {frameWidth: 16, frameHeight: 16});
     }
@@ -37,11 +39,40 @@ class SceneOne extends Phaser.Scene {
         loadPlayer(this, this.sceneId, 2);
         loadNPCs(this, this.sceneId, 2);
 
+
+
         /*LOAD FINAL LAYER OF MAP*/
         var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
+        loadFloorObjects(this, this.sceneId, 2);
         loadPlayer(this, this.sceneId, 3);
+        
+        
+
+         this.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
+            inventoryManage(2, this, 2);
+         });
+         this.physics.add.overlap(gameState.player, onFloorObj[3],  () => {
+            inventoryManage(3, this, 3);
+         });
+         this.physics.add.overlap(gameState.player, onFloorObj[4],  () => {
+            inventoryManage(4, this, 4);
+         });
+         this.physics.add.overlap(gameState.player, onFloorObj[5],  () => {
+            inventoryManage(2, this, 5);
+         });
+         this.physics.add.overlap(gameState.player, onFloorObj[6],  () => {
+            inventoryManage(2, this, 6);
+         });
+         this.physics.add.overlap(gameState.player, onFloorObj[7],  () => {
+            inventoryManage(2, this, 7);
+         });
+
+
+
+
+
 
         const debugGraphics = this.add.graphics().setAlpha(0.5);        
     
@@ -51,14 +82,20 @@ class SceneOne extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
             });
 
-
         this.physics.add.overlap(npcId['boss2'], gameState.player, () => {
             gameState.hitpoints -= npcId['boss2'].attPower;
             console.log(gameState.hitpoints)
         });
+
+        
+         /*   gameState.invSlots['item2'].on('pointerup', function() {
+                console.log("Clicked")
+                gameState.invSlots['item2'].destroy();
+        });*/
+
         createAnims(this);
 
-        npcId['boss2'].move = 0;
+        
     }
 
 update() {

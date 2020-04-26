@@ -13,6 +13,28 @@ class MainScreen extends Phaser.Scene {
     }
 }
 
+var conErr = [
+    'background-color: red',
+    'color: black',
+    'padding: 1px',
+    'opacity: 0.5'
+].join(';');
+
+var conCre = [
+    'background-color: orange',
+    'color: black',
+    'padding: 1px',
+    'opacity: 0.5'
+].join(';');
+
+var conCom = [
+    'background-color: green',
+    'color: white',
+    'padding: 1px',
+    'opacity: 0.5'
+].join(';');
+
+
 /* Checks whether player is in radius around Npc (parsed) */
 function isClose(npcId, range) {
     if(npcId.alive == true) {
@@ -30,11 +52,11 @@ function isClose(npcId, range) {
 function attackNpc(npcId) {
         if(isClose(npcId, npcId.range)) {
             npcId.health -= 2;
-            console.log(npcId.health)
+            console.log("%cSuccess attack on "+npcId+". Health: "+npcId.health, conCom)
         } else if(npcId.alive == false) {
                 console.log("Npc Dead")
         } else {
-            console.log("Not close enough")
+            console.log("%cNot close enough", conCre)
         }
 }
 
@@ -112,6 +134,7 @@ function chasePlayer(npcId) {
     }
 
 function render() {
+    console.log("Creating Debug Camera")
     game.debug.cameraInfo(game.camera, 32, 32);
 }
 
@@ -120,14 +143,21 @@ function render() {
 function loadNPCs(game, scene, stage) {
     /*PRELOAD FUNCTIONS*/
     if(stage == 1) {
+        console.log("%cPreloading " + bosses.length +" NPCs", conCre);
         for(var i =0; i < bosses.length; i++) {
             if(bosses[i][9] == scene) {
                 game.load.atlas(bosses[i][0], 'assets/NPCs/'+bosses[i][0]+'spritesheet.png', 'assets/NPCs/'+bosses[i][0]+'sprites.json');
             }
         }
+        if (i = bosses.length) {
+            console.log("%cLoaded " + i + " NPCs", conCom);
+        } else {
+            console.log("%cError loading NPCs. Stuck at iteration "+i, conErr);
+        }
     }
     /*CREATE FUNCTIONS*/
     if(stage == 2) {
+        console.log("%cCreating NPCs", conCom)
         for(var i =0; i < bosses.length; i++) {
             if(bosses[i][9] == scene) {
                 npcId[bosses[i][0]] = game.physics.add.sprite(bosses[i][1], bosses[i][2], bosses[i][0]).setScale(bosses[i][3]);
@@ -137,6 +167,7 @@ function loadNPCs(game, scene, stage) {
                 npcId[bosses[i][0]].alive = true;
                 npcId[bosses[i][0]].range = bosses[i][4];
                 npcId[bosses[i][0]].setInteractive();
+                npcId[bosses[i][0]].move = 0;
                 game.physics.add.collider(npcId[bosses[i][0]], gameState.clipped);
 
                 if(bosses[i][5] == 'left') {
@@ -162,19 +193,54 @@ function loadNPCs(game, scene, stage) {
     }
 }
 
+function loadFloorObjects(game, scene, stage) {
+    /*PRELOAD FUNCTIONS*/
+    if(stage == 1) {
+        console.log("%cLoading "+ onFloor.length +" Floor Objects", conCre)
+        for(var i =0; i < onFloor.length; i++) {
+            var ObjScene = onFloor[i][3];
+            var ObjName = onFloor[i][0];
+            if(ObjScene == scene) {
+                game.load.image(ObjName, 'assets/Inventory/'+ObjName+'.png');
+            }
+        }
+        console.log("%cFinished loading "+ i +" Floor Objects", conCom)
+    }
+    /*CREATE FUNCTIONS*/
+    if(stage == 2) {
+        console.log("%cCreating " + onFloor.length + " Floor Objects", conCom)
+        for(var i =0; i < onFloor.length; i++) {
+            var ObjScene = onFloor[i][3];
+            var ObjName = onFloor[i][0];
+            if(onFloor[i][3] == scene) {
+                if(onFloor[i][5] == true) {
+                    onFloorObj[i+1] = game.physics.add.sprite(onFloor[i][1], onFloor[i][2], onFloor[i][0]);
+                    onFloorObj[i+1].setInteractive();
+                    console.log("%cCreated "+onFloor[i][0]+" on the floor at "+onFloor[i][1]+"/"+onFloor[i][2]+ "\n with ID: "+(i+1), conCom)
+                }
+            }
+        }
+    }
+}
+
 /*LOADS PLAYER & SETS ATTRIBUTES*/
 function loadPlayer(game, scene, stage) {
     /*PRELOAD FUNCTIONS*/
     if(stage == 1) {
+        console.log("%cPreloading Player Assets", conCre)
         game.load.atlas('player', 'assets/Knight/spritesheet.png', 'assets/Knight/sprites.json');
         game.load.atlas('playAtt', 'assets/Knight/paspritesheet.png', 'assets/Knight/pasprites.json');
+        console.log("%cLoaded Player Assets", conCom)
     }
     /*CREATE FUNCTION BELOW MAP*/
     if(stage == 2) {
+        console.log("%cLoading Player below 'On Top' map layer", conCre)
         gameState.player = game.physics.add.sprite(gameState.xloc, gameState.yloc, 'player').setScale(1.2);
+        console.log("%cLoaded Player below 'On Top' map layer", conCom)
     }
     /*CREATE FUNCTION GENERIC*/
     if(stage == 3) {
+        console.log("%cSetting player attributes", conCre)
         gameState.player.setCollideWorldBounds(true);
 
         game.cameras.main.startFollow(gameState.player, true);
@@ -189,6 +255,17 @@ function loadPlayer(game, scene, stage) {
         gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
         game.physics.add.collider(gameState.player, gameState.clipped);
 
+        game.input.on('pointerup', function() {
+            //console.log("X: "+ event.clientX + "\nY: "+event.clientY);
+            itemHandler(event.clientX, event.clientY, game)
+        })
+
+        /*LOAD IN SWORD*/
+        inventory[0][0] = 1;
+        inventory[0][1] = 1;
+        invSlots[1] = game.add.sprite(200, 220, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[1].setInteractive(); 
+        console.log("%cLoaded player attributes", conCom)
     }
 }
 
@@ -217,8 +294,6 @@ function gameUpdateLogic(game, scene) {
         npcId['boss2'].setVelocityX(0);
         npcId['boss2'].setVelocityY(0);
     }
-
-    
     /** Check if attacking... */
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
         attackNpc(npcId['boss2']);
@@ -294,8 +369,115 @@ function gameUpdateLogic(game, scene) {
 }
 }
 
-const gameState = {
+function inventoryManage(object, game, indId) {
+        var slots = [
+            [200, 220],
+            [220, 220],
+            [240, 220],
+            [260, 220],
+            [280, 220]
+        ];
+        var trySlot = 0;
+        var success = false;
+        for(var i = 0; i < inventory.length; i++) {
+            if (inventory[i][0] == 0) {
+                inventory[i][0] = object;
+                inventory[i][1] = indId;
+                invSlots[indId] = game.add.sprite(slots[i][0], slots[i][1], objects[inventory[i][0]][0]).setScrollFactor(0);
+                invSlots[indId].setInteractive(); 
+                //once object defined, set i to maximum to stop loop...
+                trySlot = 0;
+                success = true;
+                i = inventory.length;
+            } else {
+                trySlot += 1;
+            }
+            if (trySlot >= inventory.length) {
+                /*Inventory is Full*/
+                success = false;
+                console.log("%cInventory full!", conErr)
+            }
+        }
+        if (success == true) {
+            console.log("%cAdded to inventory: "+success+"\n"+object, conCom);
+            onFloorObj[indId].destroy();
+            console.log("%cDeleted Item from floor Id: "+indId, conCre)
+        }
 }
+
+function clickSlot(x, y) {
+            if (x > 289 && x < 305 && y > 48 && y < 68) {
+                gameState.itemClicked = objects[ [inventory[0][0]] [0] ];
+                console.log(gameState.itemClicked)
+                return 0;
+            } else if (x > 323 && x < 339 && y > 48 && y < 68) {
+                gameState.itemClicked = objects[[inventory[1][0]][0]];
+                return 1;
+            } else if (x > 357 && x < 376 && y > 48 && y < 68) {
+                gameState.itemClicked = objects[[inventory[2][0]][0]];
+                return 2;
+            } else if (x > 392 && x < 407 && y > 48 && y < 68) {
+                gameState.itemClicked = objects[[inventory[3][0]][0]];
+                return 3;
+            } else if (x > 422 && x < 444 && y > 48 && y < 68) {
+                gameState.itemClicked = objects[[inventory[4][0]][0]];
+                return 4;
+            } else {
+                gameState.itemClicked = '';
+            }
+}
+
+function destroyItem(itemClicked, slot) {
+    console.log("Destroyed Item Id: "+itemClicked)
+    invSlots[inventory[slot][1]].destroy();
+    inventory[slot][0] = 0;
+    inventory[slot][1] = 0;
+    gameState.itemClicked = '';
+    console.log(inventory)
+}
+
+function itemHandler(x, y) {
+    var slot = clickSlot(x, y);
+    if (gameState.itemClicked[0] == 'item1') {
+
+    } else if (gameState.itemClicked[0] == 'item2') {
+
+        destroyItem(2, slot);
+    } else if (gameState.itemClicked[0] == 'item3') {
+        if(gameState.hitpoints < 100) {
+            gameState.hitpoints = 100;
+            destroyItem(3, slot);
+            console.log("Player hitpoints restored");
+        } else {
+            //console.log("This item will restore your hitpoints")
+        }
+    } else {
+        console.log("%cNothing interesting happens...", conCre)
+    }   
+}
+
+
+const gameState = {
+
+    
+}
+
+var inventory =[
+ [0,0],
+ [0,0],
+ [0,0],
+ [0,0],
+ [0,0]
+]
+
+var objects = [
+    [],
+    ['item1', 0],
+    ['item2', 0],
+    ['item3', 0], 
+    ['item4', 0], 
+    ['item5', 0]
+]
 
 const config = {
     type: Phaser.AUTO,
@@ -316,9 +498,22 @@ const config = {
 var map;
 var player;
 var npcId = new Object();
+var onFloorObj = new Object();
+var invSlots = new Object();
 /* ['Name', XLoc, YLoc, Scale, Range, WayToFace, SpriteFacing, Scale, Health, 'Scene']  */
 var bosses = [
     ['boss1', 750, 300, 1.5, 70, 'right', 'right', 0.5, 20, 'SceneOne'],
     ['boss2', 450, 250, 1.2, 50, 'left', 'right', 0.5, 20, 'SceneOne'],
 ];
+
+var onFloor = [
+    ['item1', 100, 150, 'SceneOne', 1, false],
+    ['item2', 100, 200, 'SceneOne', 2, true],
+    ['item3', 100, 250, 'SceneOne', 3, true],
+    ['item4', 100, 300, 'SceneOne', 4, true],
+    ['item2', 100, 350, 'SceneOne', 2, true],
+    ['item2', 100, 400, 'SceneOne', 2, true],
+    ['item2', 100, 450, 'SceneOne', 2, true],
+];
+
 const game = new Phaser.Game(config);
