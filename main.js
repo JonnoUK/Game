@@ -428,12 +428,11 @@ function clickSlot(x, y) {
 }
 
 function destroyItem(itemClicked, slot) {
-    console.log("Destroyed Item Id: "+itemClicked)
     invSlots[inventory[slot][1]].destroy();
     inventory[slot][0] = 0;
     inventory[slot][1] = 0;
     gameState.itemClicked = '';
-    console.log(inventory)
+    console.log("Destroyed Item Id: "+itemClicked)
 }
 
 function itemHandler(x, y) {
@@ -447,7 +446,7 @@ function itemHandler(x, y) {
         if(gameState.hitpoints < 100) {
             gameState.hitpoints = 100;
             destroyItem(3, slot);
-            console.log("Player hitpoints restored");
+            //console.log("Player hitpoints restored");
         } else {
             //console.log("This item will restore your hitpoints")
         }
