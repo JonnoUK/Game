@@ -1,0 +1,10 @@
+{"frames":[{"filename":"sprite1","frame":{"x":0,"y":9,"w":22,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":26},"sourceSize":{"w":22,"h":26}},
+    {"filename":"sprite2","frame":{"x":35,"y":9,"w":22,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":26},"sourceSize":{"w":22,"h":26}},
+    {"filename":"sprite3","frame":{"x":69,"y":9,"w":24,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":26},"sourceSize":{"w":24,"h":26}},
+    {"filename":"sprite4","frame":{"x":105,"y":10,"w":27,"h":25},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":27,"h":25},"sourceSize":{"w":27,"h":25}},
+    {"filename":"sprite5","frame":{"x":140,"y":9,"w":25,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":25,"h":26},"sourceSize":{"w":25,"h":26}},
+    {"filename":"sprite6","frame":{"x":175,"y":9,"w":22,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":26},"sourceSize":{"w":22,"h":26}},
+    {"filename":"sprite7","frame":{"x":210,"y":9,"w":22,"h":26},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":26},"sourceSize":{"w":22,"h":26}},
+
+    {"filename":"sprite8","frame":{"x":245,"y":10,"w":22,"h":25},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":25},"sourceSize":{"w":22,"h":25}}
+    ],"meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"plwalk.png","size":{"w":768,"h":64},"scale":1}}

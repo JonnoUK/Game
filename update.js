@@ -32,63 +32,77 @@ function gameUpdateLogic(game, scene) {
 }
 
 function playerUpdates(game) {
+
+    gameState.defending = 0;
     /** Check if attacking... */
-    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-        attackNpc();
-        gameState.attacking = true;
-        gameState.player.anims.play('playAtt', true);
+    if (gameState.cursors.space.isDown && !gameState.attacking) {
+        gameState.player.defending = 100;
         gameState.player.setScale(1);
-    } else if (gameState.attacking == true) {
-        game.time.delayedCall(400, ()=> {
-            gameState.attacking = false;
-            gameState.player.setScale(1.2);
-        });
+    } else {
+        gameState.player.defending = 0;
     }
-    
-    if(gameState.attacking == true) {
-        gameState.player.anims.play('playAtt', true);
-    }
-    
+
     
     
     /** Player Controls */
     if(gameState.cursors.shift.isDown){
         console.log(inventory)
     }
-    
-    if(gameState.cursors.left.isDown){
+
+
+
+
+    if(gameState.leftA.isDown){
         gameState.player.flipX = true;
         gameState.player.direction = 'left';
-        if(!gameState.attacking) {
+        if(!gameState.attacking || gameState.player.defending == 0) {
             gameState.player.anims.play('walk', true); 
+            gameState.player.setScale(1.2);
         }
-        gameState.player.setVelocityX(-70)
+        gameState.player.setVelocityX(-gameState.player.speed)
         
-    } else if (gameState.cursors.right.isDown) {
+    } else if (gameState.rightD.isDown) {
         gameState.player.flipX = false;
         gameState.player.direction = 'right';
-        if(!gameState.attacking) {
+        if(!gameState.attacking || gameState.player.defending == 0) {
             gameState.player.anims.play('walk', true); 
+            gameState.player.setScale(1.2);
         }
-        gameState.player.body.setVelocityX(70)
+        gameState.player.body.setVelocityX(gameState.player.speed)
     } else {
         gameState.player.body.setVelocityX(0)
     }
-    if(gameState.cursors.up.isDown){
-        if(!gameState.attacking) {
+    if(gameState.upW.isDown){
+        if(!gameState.attacking || gameState.player.defending == 0) {
             gameState.player.anims.play('walk', true);
+            gameState.player.setScale(1.2);
         }
-        gameState.player.setVelocityY(-70)
+        gameState.player.setVelocityY(-gameState.player.speed)
         
-    } else if (gameState.cursors.down.isDown) {
-        if(!gameState.attacking) {
+    } else if (gameState.downS.isDown) {
+        if(!gameState.attacking || gameState.player.defending == 0) {
             gameState.player.anims.play('walk', true);
+            gameState.player.setScale(1.2);
         }
-        gameState.player.body.setVelocityY(70)
+        gameState.player.body.setVelocityY(gameState.player.speed)
     } else {
         gameState.player.body.setVelocityY(0)
     }
-    if(!gameState.attacking && !gameState.cursors.left.isDown && !gameState.cursors.right.isDown && !gameState.cursors.up.isDown && !gameState.cursors.down.isDown ){
+
+
+    if(gameState.player.defending == 100) {
+        gameState.player.anims.play('plShield', true);
+        gameState.player.setVelocityX(0);
+        gameState.player.setVelocityY(0);
+        gameState.player.setScale(1);
+    } else if(gameState.attacking == true) {
+        gameState.player.anims.play('playAtt', true);
+        gameState.player.setVelocityX(0);
+        gameState.player.setVelocityY(0);
+    }
+
+    if(gameState.player.defending == 0 && !gameState.attacking && !gameState.leftA.isDown && !gameState.rightD.isDown && !gameState.upW.isDown && !gameState.downS.isDown ){
         gameState.player.anims.play('idle', true);
+        gameState.player.setScale(1);
     }
     }

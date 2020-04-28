@@ -13,22 +13,29 @@ function isClose(npcId, range) {
 }
 
 
+
 /*LOADS PLAYER & SETS ATTRIBUTES*/
 function loadPlayer(game, scene, stage) {
     /*PRELOAD FUNCTIONS*/
     if(stage == 1) {
         console.log("%cPreloading Player Assets", conCre)
-        game.load.atlas('player', 'assets/Knight/spritesheet.png', 'assets/Knight/sprites.json');
+        game.load.atlas('player', 'assets/Knight/plwalk.png', 'assets/Knight/plwalk.json');
         game.load.atlas('playAtt', 'assets/Knight/paspritesheet.png', 'assets/Knight/pasprites.json');
+        game.load.atlas('plDeath', 'assets/Knight/playerDeath.png', 'assets/Knight/playerDeath.json');
+        game.load.atlas('plIdle', 'assets/Knight/plIdle.png', 'assets/Knight/plIdle.json');
+        game.load.atlas('plDefend', 'assets/Knight/plDefend.png', 'assets/Knight/plDefend.json');
         game.load.image('healthEmpty', 'assets/Knight/health-bar-empty.png');
         game.load.image('healthFull', 'assets/Knight/health-bar-full.png');
         console.log("%cLoaded Player Assets", conCom)
+
     }
     /*CREATE FUNCTION BELOW MAP*/
     if(stage == 2) {
         console.log("%cLoading Player below 'On Top' map layer", conCre)
         gameState.player = game.physics.add.sprite(gameState.xloc, gameState.yloc, 'player').setScale(1.2);
         console.log("%cLoaded Player below 'On Top' map layer", conCom)
+        gameState.player.speed = 100;
+        gameState.player.canAttack = true;
     }
     /*CREATE FUNCTION GENERIC*/
     if(stage == 3) {
@@ -39,6 +46,7 @@ function loadPlayer(game, scene, stage) {
 
         gameState.gameActive = true;
         gameState.attacking = false;
+        gameState.defending = 0;
         
         /*Sets up Camera & Physics of world*/
         game.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);

@@ -5,10 +5,20 @@ class MainScreen extends Phaser.Scene {
 
     create() {
             gameState.hitpoints = 100;
-            this.scene.stop();            
+            this.scene.stop();        
+            
+              // Once the page is loaded, disable the right click menu of the canvas.
+
+
+            
             this.scene.start('SceneOne')
+
+            
+
+
     }
 }
+
 
 var conErr = [
     'background-color: red',
@@ -33,17 +43,29 @@ var conCom = [
 
 
 
+
 function render() {
     console.log("Creating Debug Camera")
     game.debug.cameraInfo(game.camera, 32, 32);
 }
 
+function keyListen(game) {
+
+    gameState.upW = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    gameState.leftA = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    gameState.downS = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    gameState.rightD = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+
+     
+}
 
 
 const gameState = {
 
     
 }
+
 
 var inventory =[
     [0,0],

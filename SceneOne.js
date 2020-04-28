@@ -49,6 +49,9 @@ class SceneOne extends Phaser.Scene {
         /*HANDLE ITEM OVERLAPS AND CLICKS*/
         handleItems(this);
 
+        keyListen(this);
+        attackNpc(this);
+
         const debugGraphics = this.add.graphics().setAlpha(0.5);        
     
         gameState.clipped.renderDebug(debugGraphics, {
@@ -56,12 +59,6 @@ class SceneOne extends Phaser.Scene {
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
             });
-
-
-            
-        this.physics.add.overlap(npcId['boss2'], gameState.player, () => {
-            gameState.hitpoints -= npcId['boss2'].attPower;
-        });
 
         
          /*   gameState.invSlots['item2'].on('pointerup', function() {
