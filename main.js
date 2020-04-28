@@ -254,20 +254,41 @@ function loadPlayer(game, scene, stage) {
         game.physics.world.setBounds(0, 0, 2000, 1500);
         gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
         game.physics.add.collider(gameState.player, gameState.clipped);
-
+        console.log("%cLoaded player attributes", conCom)
+        /*CLICK FUNCTION*/
+        /*
         game.input.on('pointerup', function() {
-            //console.log("X: "+ event.clientX + "\nY: "+event.clientY);
             itemHandler(event.clientX, event.clientY, game)
-        })
+        });
+        //*/
+ 
+        loadInventory(game);
 
-        /*LOAD IN SWORD*/
+
+    }
+}
+
+function loadInventory(game) {
+        console.log("%cLoading Inventory", conCre)
+        /*LOAD IN SWORD IN INVENTORY*/
         inventory[0][0] = 1;
         inventory[0][1] = 1;
         invSlots[1] = game.add.sprite(200, 220, objects[inventory[0][0]][0]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
-        console.log("%cLoaded player attributes", conCom)
-    }
+
+
+        /*SET BLANK SPRITES IN INVENTORY*/
+        invSlots[2] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[2].visible = false;
+        invSlots[3] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[3].visible = false;
+        invSlots[4] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[4].visible = false;
+        invSlots[5] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[5].visible = false;
+        console.log("%cLoaded Inventory", conCom)
 }
+
 
 function gameUpdateLogic(game, scene) {
      /** ACTIONS IF GAME PLAYING */
@@ -276,11 +297,14 @@ function gameUpdateLogic(game, scene) {
         'Health: '+gameState.hitpoints
         ]);
 
+
     /** IF OUT OF HITPOINTS */
     if(gameState.hitpoints <= 0) {
         gameState.gameActive = false;
     }
+
     var npc = npcId['boss2']
+
     /** IF CLOSE TO BOSS, AND BOSS ALIVE, CHASE. IF NOT CLOSE, DON'T MOVE*/
     if (isClose(npcId['boss2'], 100) && npc.alive == true) {
         chasePlayer(npcId['boss2'], 1, 150);
@@ -318,6 +342,10 @@ function gameUpdateLogic(game, scene) {
     }
 
     /** Player Controls */
+    if(gameState.cursors.shift.isDown){
+        console.log(inventory)
+    }
+
     if(gameState.cursors.left.isDown){
         gameState.player.flipX = true;
         if(!gameState.attacking) {
@@ -378,7 +406,6 @@ function inventoryManage(object, game, indId) {
             [280, 220]
         ];
         var trySlot = 0;
-        var success = false;
         for(var i = 0; i < inventory.length; i++) {
             if (inventory[i][0] == 0) {
                 inventory[i][0] = object;
@@ -386,46 +413,26 @@ function inventoryManage(object, game, indId) {
                 invSlots[indId] = game.add.sprite(slots[i][0], slots[i][1], objects[inventory[i][0]][0]).setScrollFactor(0);
                 invSlots[indId].setInteractive(); 
                 //once object defined, set i to maximum to stop loop...
+                gameState.latestInv = i;
                 trySlot = 0;
-                success = true;
+                gameState.invSuccess = true;
                 i = inventory.length;
             } else {
                 trySlot += 1;
             }
             if (trySlot >= inventory.length) {
                 /*Inventory is Full*/
-                success = false;
+                gameState.invSuccess = false;
                 console.log("%cInventory full!", conErr)
             }
         }
-        if (success == true) {
-            console.log("%cAdded to inventory: "+success+"\n"+object, conCom);
+        if (gameState.invSuccess == true) {
+            console.log("%cAdded to inventory: "+gameState.invSuccess+"\n"+object, conCom);
             onFloorObj[indId].destroy();
             console.log("%cDeleted Item from floor Id: "+indId, conCre)
         }
 }
 
-function clickSlot(x, y) {
-            if (x > 289 && x < 305 && y > 48 && y < 68) {
-                gameState.itemClicked = objects[ [inventory[0][0]] [0] ];
-                console.log(gameState.itemClicked)
-                return 0;
-            } else if (x > 323 && x < 339 && y > 48 && y < 68) {
-                gameState.itemClicked = objects[[inventory[1][0]][0]];
-                return 1;
-            } else if (x > 357 && x < 376 && y > 48 && y < 68) {
-                gameState.itemClicked = objects[[inventory[2][0]][0]];
-                return 2;
-            } else if (x > 392 && x < 407 && y > 48 && y < 68) {
-                gameState.itemClicked = objects[[inventory[3][0]][0]];
-                return 3;
-            } else if (x > 422 && x < 444 && y > 48 && y < 68) {
-                gameState.itemClicked = objects[[inventory[4][0]][0]];
-                return 4;
-            } else {
-                gameState.itemClicked = '';
-            }
-}
 
 function destroyItem(itemClicked, slot) {
     invSlots[inventory[slot][1]].destroy();
@@ -435,24 +442,119 @@ function destroyItem(itemClicked, slot) {
     console.log("Destroyed Item Id: "+itemClicked)
 }
 
-function itemHandler(x, y) {
-    var slot = clickSlot(x, y);
-    if (gameState.itemClicked[0] == 'item1') {
+function itemHandler(clicked, slot, game) {
 
-    } else if (gameState.itemClicked[0] == 'item2') {
+    if (clicked[0] == 'item1') {
+        console.log("Hello World")
+    } else if (clicked[0] == 'item2') {
 
         destroyItem(2, slot);
-    } else if (gameState.itemClicked[0] == 'item3') {
+    } else if (clicked[0] == 'item3') {
         if(gameState.hitpoints < 100) {
             gameState.hitpoints = 100;
             destroyItem(3, slot);
             //console.log("Player hitpoints restored");
         } else {
-            //console.log("This item will restore your hitpoints")
+            console.log("This item will restore your hitpoints")
         }
     } else {
-        console.log("%cNothing interesting happens...", conCre)
+        //console.log("%cNothing interesting happens...", conCre)
     }   
+}
+
+function handleItems(game) {
+    if(onFloorObj[2] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
+            inventoryManage(2, game, 2);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+            invSlots[2].on('pointerup', function () {
+                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                console.log("Clicked "+gameState.itemClicked);
+                itemHandler(gameState.itemClicked, invSlot, game)
+            });
+        }
+        });
+    }
+
+
+    if(onFloorObj[3] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[3],  () => {
+            inventoryManage(3, game, 3);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+            invSlots[3].on('pointerup', function () {
+                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                console.log("Clicked ",gameState.itemClicked);
+                itemHandler(gameState.itemClicked, invSlot, game)
+            });
+        }
+        });
+    }
+    if(onFloorObj[4] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[4],  () => {
+            inventoryManage(4, game, 4);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+            invSlots[4].on('pointerup', function () {
+                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                console.log("Clicked "+gameState.itemClicked);
+                itemHandler(gameState.itemClicked, invSlot, game)
+            });
+        }
+        });
+    }
+    if(onFloorObj[5] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[5],  () => {
+            inventoryManage(2, game, 5);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+            invSlots[5].on('pointerup', function () {
+                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                console.log("Clicked "+gameState.itemClicked);
+                itemHandler(gameState.itemClicked, invSlot, game)
+            });
+        }
+        });
+    }
+    if(onFloorObj[6] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[6],  () => {
+            inventoryManage(2, game, 6);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+            invSlots[6].on('pointerup', function () {
+                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                console.log("Clicked "+gameState.itemClicked);
+                itemHandler(gameState.itemClicked, invSlot, game)
+                });
+            }
+        });
+    }
+    if(onFloorObj[7] != undefined){
+        game.physics.add.overlap(gameState.player, onFloorObj[7],  () => {
+            inventoryManage(2, game, 7);
+            var invSlot = gameState.latestInv;
+            var success = gameState.invSuccess;
+            if (success) {
+                invSlots[7].on('pointerup', function () {
+                    gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                    console.log("Clicked "+gameState.itemClicked);
+                    itemHandler(gameState.itemClicked, invSlot, game)
+                });
+            }
+        });
+    }
+
+
+
+
+
+
 }
 
 
@@ -470,10 +572,10 @@ var inventory =[
 ]
 
 var objects = [
-    [],
-    ['item1', 0],
+    ["", 0],
+    ["item1", 0],
     ['item2', 0],
-    ['item3', 0], 
+    ["item3", 0], 
     ['item4', 0], 
     ['item5', 0]
 ]
@@ -509,10 +611,6 @@ var onFloor = [
     ['item1', 100, 150, 'SceneOne', 1, false],
     ['item2', 100, 200, 'SceneOne', 2, true],
     ['item3', 100, 250, 'SceneOne', 3, true],
-    ['item4', 100, 300, 'SceneOne', 4, true],
-    ['item2', 100, 350, 'SceneOne', 2, true],
-    ['item2', 100, 400, 'SceneOne', 2, true],
-    ['item2', 100, 450, 'SceneOne', 2, true],
 ];
 
 const game = new Phaser.Game(config);
