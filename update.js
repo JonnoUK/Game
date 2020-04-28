@@ -1,14 +1,11 @@
 function gameUpdateLogic(game, scene) {
      /** ACTIONS IF GAME PLAYING */
      if (gameState.gameActive == true) {
+
+        /*HEALTH BAR*/
         var displayHp = gameState.hitpoints / 100 * 300;
         gameState.playerDisplay.setCrop();
         gameState.playerDisplay.setCrop(0, 0, displayHp, 20);
-
-        /*gameState.playerDisplay.setText([
-        'Health: '+gameState.hitpoints
-        ]);
-        //*/
 
 
     /** IF OUT OF HITPOINTS */
@@ -16,24 +13,28 @@ function gameUpdateLogic(game, scene) {
         gameState.gameActive = false;
     }
 
-    var npc = npcId['boss2']
+    npcUpdates();
+    playerUpdates(game);
 
-    /** IF CLOSE TO BOSS, AND BOSS ALIVE, CHASE. IF NOT CLOSE, DON'T MOVE*/
-    if (isClose(npcId['boss2'], 100) && npc.alive == true) {
-        chasePlayer(npcId['boss2'], 1, 150);
-        npcId['boss2'].move += 1;
-    } else if (npc.alive === true) {
-            if (npcId['boss2'].move >= 500){
-                npcId['boss2'].x = bosses[1][1];
-                npcId['boss2'].y = bosses[1][2];
-            }
-        npc.play('idleBoss', true);
-        npcId['boss2'].setVelocityX(0);
-        npcId['boss2'].setVelocityY(0);
+
+    /** LOSE CONDITION */
+} else {
+
+    game.physics.pause();
+    gameState.player.body.setVelocityX(0)
+    gameState.player.body.setVelocityY(0)
+    /** Waits for Space Input */
+    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
+        game.scene.stop();
+        game.scene.start('MainScreen')
     }
+}
+}
+
+function playerUpdates(game) {
     /** Check if attacking... */
     if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-        attackNpc(npcId['boss2']);
+        attackNpc();
         gameState.attacking = true;
         gameState.player.anims.play('playAtt', true);
         gameState.player.setScale(1);
@@ -43,24 +44,21 @@ function gameUpdateLogic(game, scene) {
             gameState.player.setScale(1.2);
         });
     }
-
+    
     if(gameState.attacking == true) {
         gameState.player.anims.play('playAtt', true);
     }
-
-    /** Checks if boss is still alive... */
-    if(npcId['boss2'].alive == true && npcId['boss2'].health <= 0) {
-        npcId['boss2'].alive = false;
-        npcId['boss2'].destroy();
-    }
-
+    
+    
+    
     /** Player Controls */
     if(gameState.cursors.shift.isDown){
         console.log(inventory)
     }
-
+    
     if(gameState.cursors.left.isDown){
         gameState.player.flipX = true;
+        gameState.player.direction = 'left';
         if(!gameState.attacking) {
             gameState.player.anims.play('walk', true); 
         }
@@ -68,6 +66,7 @@ function gameUpdateLogic(game, scene) {
         
     } else if (gameState.cursors.right.isDown) {
         gameState.player.flipX = false;
+        gameState.player.direction = 'right';
         if(!gameState.attacking) {
             gameState.player.anims.play('walk', true); 
         }
@@ -92,18 +91,4 @@ function gameUpdateLogic(game, scene) {
     if(!gameState.attacking && !gameState.cursors.left.isDown && !gameState.cursors.right.isDown && !gameState.cursors.up.isDown && !gameState.cursors.down.isDown ){
         gameState.player.anims.play('idle', true);
     }
-
-
-    /** LOSE CONDITION */
-} else {
-
-    game.physics.pause();
-    gameState.player.body.setVelocityX(0)
-    gameState.player.body.setVelocityY(0)
-    /** Waits for Space Input */
-    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-        game.scene.stop();
-        game.scene.start('MainScreen')
     }
-}
-}
