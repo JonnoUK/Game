@@ -39,8 +39,6 @@ class SceneOne extends Phaser.Scene {
         loadPlayer(this, this.sceneId, 2);
         loadNPCs(this, this.sceneId, 2);
 
-
-
         /*LOAD FINAL LAYER OF MAP*/
         var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
 
@@ -48,31 +46,8 @@ class SceneOne extends Phaser.Scene {
         loadFloorObjects(this, this.sceneId, 2);
         loadPlayer(this, this.sceneId, 3);
         
-        
-
-         this.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
-            inventoryManage(2, this, 2);
-         });
-         this.physics.add.overlap(gameState.player, onFloorObj[3],  () => {
-            inventoryManage(3, this, 3);
-         });
-         this.physics.add.overlap(gameState.player, onFloorObj[4],  () => {
-            inventoryManage(4, this, 4);
-         });
-         this.physics.add.overlap(gameState.player, onFloorObj[5],  () => {
-            inventoryManage(2, this, 5);
-         });
-         this.physics.add.overlap(gameState.player, onFloorObj[6],  () => {
-            inventoryManage(2, this, 6);
-         });
-         this.physics.add.overlap(gameState.player, onFloorObj[7],  () => {
-            inventoryManage(2, this, 7);
-         });
-
-
-
-
-
+        /*HANDLE ITEM OVERLAPS AND CLICKS*/
+        handleItems(this);
 
         const debugGraphics = this.add.graphics().setAlpha(0.5);        
     
