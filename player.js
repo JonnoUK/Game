@@ -117,7 +117,7 @@ function loadInventory(game) {
         /*LOAD IN SWORD IN INVENTORY*/
         inventory[0][0] = 1;
         inventory[0][1] = 1;
-        invSlots[1] = game.add.sprite(slots[0][1] slots[0][0], objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], objects[inventory[0][0]][0]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
 
 
@@ -132,5 +132,3 @@ function loadInventory(game) {
         invSlots[5].visible = false;
         console.log("%cLoaded Inventory", conCom)
 }
-
-

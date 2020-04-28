@@ -2,7 +2,6 @@ function gameUpdateLogic(game, scene) {
      /** ACTIONS IF GAME PLAYING */
      if (gameState.gameActive == true) {
         var displayHp = gameState.hitpoints / 100 * 300;
-        console.log(displayHp)
         gameState.playerDisplay.setCrop();
         gameState.playerDisplay.setCrop(0, 0, displayHp, 20);
 
@@ -97,9 +96,7 @@ function gameUpdateLogic(game, scene) {
 
     /** LOSE CONDITION */
 } else {
-    gameState.playerDisplay.setText([
-        'GAME OVER'
-    ]);
+
     game.physics.pause();
     gameState.player.body.setVelocityX(0)
     gameState.player.body.setVelocityY(0)
