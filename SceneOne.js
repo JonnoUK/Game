@@ -57,9 +57,10 @@ class SceneOne extends Phaser.Scene {
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
             });
 
+
+            
         this.physics.add.overlap(npcId['boss2'], gameState.player, () => {
             gameState.hitpoints -= npcId['boss2'].attPower;
-            console.log(gameState.hitpoints)
         });
 
         

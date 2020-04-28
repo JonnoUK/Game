@@ -1,54 +1,3 @@
-function attackNpc(npcId) {
-    if(isClose(npcId, npcId.range)) {
-        npcId.health -= 2;
-        console.log("%cSuccess attack on "+npcId+". Health: "+npcId.health, conCom)
-    } else if(npcId.alive == false) {
-            console.log("Npc Dead")
-    } else {
-        console.log("%cNot close enough", conCre)
-    }
-}
-
-
-
-function chasePlayer(npcId) {
-var playerX = gameState.player.x
-var playerY = gameState.player.y
-//If player larger
-    if(playerX > npcId.x) {
-        if(npcId.direction == 'left') {
-            npcId.flipX = !npcId.flipX;
-            npcId.direction = 'right';
-        } else {
-            npcId.flipX = npcId.flipX;
-        }
-            npcId.setVelocityX(40)
-            npcId.play('walkBoss', true);
-            
-//If player smaller
-    } else if (playerX < npcId.x) {
-        if(npcId.direction == 'right') {
-            npcId.flipX = !npcId.flipX;
-            npcId.direction = 'left';
-        } else {
-            npcId.flipX = npcId.flipX
-        }
-        npcId.setVelocityX(-40)
-        npcId.play('walkBoss', true);
-    }
-//If player larger
-    if(playerY > npcId.y) {
-        npcId.setVelocityY(40)
-        npcId.play('walkBoss', true);
-//If player smaller
-    } else if (playerY < npcId.y) {
-        npcId.setVelocityY(-40)
-        npcId.play('walkBoss', true);
-    }
-
-}
-
-
 /* Checks whether player is in radius around Npc (parsed) */
 function isClose(npcId, range) {
     if(npcId.alive == true) {
@@ -100,7 +49,10 @@ function loadPlayer(game, scene, stage) {
 
         //gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
         game.physics.add.collider(gameState.player, gameState.clipped);
-        console.log("%cLoaded player attributes", conCom)
+        console.log("%cLoaded player attributes", conCom);
+        gameState.player.direction = 'right';
+
+
         /*CLICK FUNCTION*/
         /*
         game.input.on('pointerup', function() {

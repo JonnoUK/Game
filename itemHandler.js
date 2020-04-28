@@ -85,13 +85,11 @@ function loadFloorObjects(game, scene, stage) {
 }
 
 /*DESTROY ITEM FUNCTION (removes from inventory)*/
-
 function destroyItem(itemClicked, slot) {
 invSlots[inventory[slot][1]].destroy();
 inventory[slot][0] = 0;
 inventory[slot][1] = 0;
 gameState.itemClicked = '';
-console.log("Destroyed Item Id: "+itemClicked)
 }
 
 
@@ -179,8 +177,6 @@ if(onFloorObj[7] != undefined){
 }
 
 }
-
-
 
 /* ITEM FUNCTIONS */
 function itemHandler(clicked, slot, game) {
