@@ -71,6 +71,8 @@ function loadPlayer(game, scene, stage) {
         console.log("%cPreloading Player Assets", conCre)
         game.load.atlas('player', 'assets/Knight/spritesheet.png', 'assets/Knight/sprites.json');
         game.load.atlas('playAtt', 'assets/Knight/paspritesheet.png', 'assets/Knight/pasprites.json');
+        game.load.image('healthEmpty', 'assets/Knight/health-bar-empty.png');
+        game.load.image('healthFull', 'assets/Knight/health-bar-full.png');
         console.log("%cLoaded Player Assets", conCom)
     }
     /*CREATE FUNCTION BELOW MAP*/
@@ -91,9 +93,12 @@ function loadPlayer(game, scene, stage) {
         
         /*Sets up Camera & Physics of world*/
         game.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        game.cameras.main.setZoom(2.2);
+        game.cameras.main.setZoom(1);
         game.physics.world.setBounds(0, 0, 2000, 1500);
-        gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
+        gameState.playerDisplay = game.add.image(5, 5, 'healthEmpty').setScrollFactor(0).setScale(0.5).setOrigin(0,0);
+        gameState.playerDisplay = game.add.image(5, 5, 'healthFull').setScrollFactor(0).setScale(0.5).setOrigin(0, 0);
+
+        //gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
         game.physics.add.collider(gameState.player, gameState.clipped);
         console.log("%cLoaded player attributes", conCom)
         /*CLICK FUNCTION*/
@@ -104,8 +109,6 @@ function loadPlayer(game, scene, stage) {
         //*/
  
         loadInventory(game);
-
-
     }
 }
 
@@ -114,7 +117,7 @@ function loadInventory(game) {
         /*LOAD IN SWORD IN INVENTORY*/
         inventory[0][0] = 1;
         inventory[0][1] = 1;
-        invSlots[1] = game.add.sprite(200, 220, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], objects[inventory[0][0]][0]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
 
 
