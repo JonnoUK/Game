@@ -1,9 +1,15 @@
 function gameUpdateLogic(game, scene) {
      /** ACTIONS IF GAME PLAYING */
      if (gameState.gameActive == true) {
-        gameState.playerDisplay.setText([
+        var displayHp = gameState.hitpoints / 100 * 300;
+        console.log(displayHp)
+        gameState.playerDisplay.setCrop();
+        gameState.playerDisplay.setCrop(0, 0, displayHp, 20);
+
+        /*gameState.playerDisplay.setText([
         'Health: '+gameState.hitpoints
         ]);
+        //*/
 
 
     /** IF OUT OF HITPOINTS */

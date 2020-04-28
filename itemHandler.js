@@ -14,16 +14,17 @@ var objects = [
     ['item5', 0]
 ]
 
+var slots = [
+    [10, 30],
+    [20, 30],
+    [30, 30],
+    [40, 30],
+    [50, 30]
+];
 
 /* ADD ITEM TO INVENTORY */
 function addToInv(object, game, indId) {
-    var slots = [
-        [200, 220],
-        [220, 220],
-        [240, 220],
-        [260, 220],
-        [280, 220]
-    ];
+
     var trySlot = 0;
     for(var i = 0; i < inventory.length; i++) {
         if (inventory[i][0] == 0) {

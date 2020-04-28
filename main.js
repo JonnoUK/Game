@@ -98,12 +98,6 @@ function loadNPCs(game, scene, stage) {
 
 
 
-
-
-
-
-
-
 const gameState = {
 
     
@@ -119,8 +113,8 @@ var inventory =[
 
 const config = {
     type: Phaser.AUTO,
-    width: 700,
-    height: 700,
+    width: 450,
+    height: 350,
     backgroundColor: '000000',
     physics: {
         default: 'arcade',
