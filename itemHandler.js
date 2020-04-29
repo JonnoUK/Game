@@ -1,36 +1,13 @@
-/*itemName (sprite), XLoc, YLoc, Scene, itemId, visible*/
-var onFloor = [
-    ['item1', 100, 150, 'SceneOne', 1, false],
-    ['item2', 100, 200, 'SceneOne', 2, true],
-    ['item3', 100, 250, 'SceneOne', 3, true],
-];
 
-var objects = [
-    ["", 0],
-    ["item1", 0],
-    ['item2', 0],
-    ["item3", 0], 
-    ['item4', 0], 
-    ['item5', 0]
-]
-
-var slots = [
-    [15, 30],
-    [35, 30],
-    [55, 30],
-    [75, 30],
-    [95, 30]
-];
 
 /* ADD ITEM TO INVENTORY */
 function addToInv(object, game, indId) {
-
     var trySlot = 0;
     for(var i = 0; i < inventory.length; i++) {
         if (inventory[i][0] == 0) {
             inventory[i][0] = object;
             inventory[i][1] = indId;
-            invSlots[indId] = game.add.sprite(slots[i][0], slots[i][1], objects[inventory[i][0]][0]).setScrollFactor(0);
+            invSlots[indId] = game.add.sprite(slots[i][0], slots[i][1], items[inventory[i][0]]).setScrollFactor(0);
             invSlots[indId].setInteractive(); 
             //once object defined, set i to maximum to stop loop...
             gameState.latestInv = i;
@@ -95,6 +72,7 @@ gameState.itemClicked = '';
 
 /* PHYSICS OF FLOOR OBJECTS & CLICK WHILE IN INVENTORY */
 function handleItems(game) {
+
 if(onFloorObj[2] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
         addToInv(2, game, 2);
@@ -102,13 +80,12 @@ if(onFloorObj[2] != undefined){
         var success = gameState.invSuccess;
         if (success) {
         invSlots[2].on('pointerup', function () {
-            gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
         });
     }
     });
 }
-
 
 if(onFloorObj[3] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[3],  () => {
@@ -117,7 +94,7 @@ if(onFloorObj[3] != undefined){
         var success = gameState.invSuccess;
         if (success) {
         invSlots[3].on('pointerup', function () {
-            gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
         });
     }
@@ -130,7 +107,7 @@ if(onFloorObj[4] != undefined){
         var success = gameState.invSuccess;
         if (success) {
         invSlots[4].on('pointerup', function () {
-            gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
         });
     }
@@ -143,7 +120,7 @@ if(onFloorObj[5] != undefined){
         var success = gameState.invSuccess;
         if (success) {
         invSlots[5].on('pointerup', function () {
-            gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
         });
     }
@@ -156,7 +133,7 @@ if(onFloorObj[6] != undefined){
         var success = gameState.invSuccess;
         if (success) {
         invSlots[6].on('pointerup', function () {
-            gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
             });
         }
@@ -169,7 +146,7 @@ if(onFloorObj[7] != undefined){
         var success = gameState.invSuccess;
         if (success) {
             invSlots[7].on('pointerup', function () {
-                gameState.itemClicked = objects[ [inventory[invSlot][0]] [0] ];
+                gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
                 itemHandler(gameState.itemClicked, invSlot, game)
             });
         }
@@ -180,15 +157,14 @@ if(onFloorObj[7] != undefined){
 
 /* ITEM FUNCTIONS */
 function itemHandler(clicked, slot, game) {
-
-    if (clicked[0] == 'item1') {
+    if (clicked == 'item1') {
 
         
 
-    } else if (clicked[0] == 'item2') {
+    } else if (clicked == 'item2') {
     
         destroyItem(2, slot);
-    } else if (clicked[0] == 'item3') {
+    } else if (clicked == 'item3') {
         if(gameState.hitpoints < 100) {
             gameState.hitpoints = 100;
             destroyItem(3, slot);

@@ -1,0 +1,23 @@
+{"frames":[
+    
+    
+    {"filename":"sprite1","frame":{"x":23,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite2","frame":{"x":87,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite3","frame":{"x":151,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite4","frame":{"x":215,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite5","frame":{"x":279,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite6","frame":{"x":343,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite7","frame":{"x":407,"y":15,"w":25,"h":29},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":25,"h":29},"sourceSize":{"w":25,"h":29}},
+    {"filename":"sprite8","frame":{"x":471,"y":16,"w":26,"h":28},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":26,"h":28},"sourceSize":{"w":26,"h":28}},
+    {"filename":"sprite9","frame":{"x":535,"y":17,"w":25,"h":27},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":25,"h":27},"sourceSize":{"w":25,"h":27}},
+    {"filename":"sprite10","frame":{"x":599,"y":17,"w":24,"h":27},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":27},"sourceSize":{"w":24,"h":27}},
+    {"filename":"sprite11","frame":{"x":663,"y":16,"w":22,"h":28},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":28},"sourceSize":{"w":22,"h":28}},
+    {"filename":"sprite12","frame":{"x":727,"y":15,"w":22,"h":29},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":22,"h":29},"sourceSize":{"w":22,"h":29}},
+    {"filename":"sprite13","frame":{"x":791,"y":14,"w":23,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":23,"h":30},"sourceSize":{"w":23,"h":30}},
+    {"filename":"sprite14","frame":{"x":855,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}},
+    {"filename":"sprite15","frame":{"x":919,"y":14,"w":24,"h":30},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":24,"h":30},"sourceSize":{"w":24,"h":30}}
+  
+
+
+
+    ],"meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"plIdle.png","size":{"w":960,"h":64},"scale":1}}
