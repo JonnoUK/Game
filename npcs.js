@@ -126,6 +126,7 @@ function attackNpc(game) {
             }
             var name = bosses[i][0]
             game.physics.add.collider(npcId[bosses[i][0]], gameState.player, () => {
+                npc.setBounce(0, 0);
                 if(npc.canAttack && npc.aggressive) {
                     npc.anims.play(name+'Att', true);
                     npc.setVelocityX(0);

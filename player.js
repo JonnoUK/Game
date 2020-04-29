@@ -1,15 +1,24 @@
 /* Checks whether player is in radius around Npc (parsed) */
-function isClose(npcId, range) {
-    if(npcId.alive == true) {
-    var maxX = npcId.x + range;
-    var minX = npcId.x - range;
-    var maxY = npcId.y + range;
-    var minY = npcId.y - range;
+function isClose(npcId, range, type) {
+    if(type == 'object') {
+        var maxX = npcId.x + range;
+        var minX = npcId.x - range;
+        var maxY = npcId.y + range;
+        var minY = npcId.y - range;
+    
+        if(gameState.player.x >= minX && gameState.player.x <= maxX && gameState.player.y >= minY && gameState.player.y <= maxY) {
+            return true;
+        }
+    } else if(npcId.alive == true) {
+        var maxX = npcId.x + range;
+        var minX = npcId.x - range;
+        var maxY = npcId.y + range;
+        var minY = npcId.y - range;
 
-    if(gameState.player.x >= minX && gameState.player.x <= maxX && gameState.player.y >= minY && gameState.player.y <= maxY) {
-    return true;
+        if(gameState.player.x >= minX && gameState.player.x <= maxX && gameState.player.y >= minY && gameState.player.y <= maxY) {
+            return true;
+        }
     }
-}
 }
 
 

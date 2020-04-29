@@ -2,17 +2,12 @@
 
 /* ADD ITEM TO INVENTORY */
 function addToInv(object, game, indId) {
-
     var trySlot = 0;
     for(var i = 0; i < inventory.length; i++) {
         if (inventory[i][0] == 0) {
             inventory[i][0] = object;
             inventory[i][1] = indId;
             invSlots[indId] = game.add.sprite(slots[i][0], slots[i][1], items[inventory[i][0]]).setScrollFactor(0);
-            console.log("%c"+inventory[i][0], conCre);
-            var num = inventory[i][0]
-            console.log("%c"+items[num],conCre)
-
             invSlots[indId].setInteractive(); 
             //once object defined, set i to maximum to stop loop...
             gameState.latestInv = i;
@@ -77,6 +72,7 @@ gameState.itemClicked = '';
 
 /* PHYSICS OF FLOOR OBJECTS & CLICK WHILE IN INVENTORY */
 function handleItems(game) {
+
 if(onFloorObj[2] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
         addToInv(2, game, 2);
@@ -90,7 +86,6 @@ if(onFloorObj[2] != undefined){
     }
     });
 }
-
 
 if(onFloorObj[3] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[3],  () => {

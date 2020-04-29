@@ -22,6 +22,7 @@ class SceneOne extends Phaser.Scene {
         this.load.image('tiles3', 'assets/Map/tree-variations.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('redBox', 'assets/redBox.png');
+        this.load.image('emptyBox', 'assets/emptyBox.png');
 
         console.log("%cFinished loading map in PreLoad",conCre)
     }
@@ -40,7 +41,7 @@ class SceneOne extends Phaser.Scene {
         console.log("%cFinished defining tile types",conCom)
  
         //var Layer2 = map.createDynamicLayer('Layer2', trees, 0, 0);
-        gameState.clipped = map.createDynamicLayer('Clipped', groundTiles, 0, 0);
+        gameState.clipped = map.createStaticLayer('Clipped', groundTiles, 0, 0);
         gameState.clipped.setCollisionByProperty({collides: true});
 
 
@@ -52,21 +53,19 @@ class SceneOne extends Phaser.Scene {
 
 
 
-        console.log("%cFinished defining clipped",conCom)
-
-
 
         /* LOAD SPRITES BELOW 'ON TOP' LAYER OF MAP*/
         loadPlayer(this, this.sceneId, 2);
         loadNPCs(this, this.sceneId, 2);
 
+
+        /*LOAD FINAL LAYER OF MAP*/
         var onTop1 = map.createStaticLayer('OnTop1', castleTiles, 0, 0);
         var onTop2 = map.createStaticLayer('OnTop2', castleTiles, 0, 0);
         var onTop3 = map.createStaticLayer('OnTop3', castleTiles, 0, 0);
         console.log("%cFinished defining map layers",conCom)
 
-        /*LOAD FINAL LAYER OF MAP*/
-        //var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
+
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
         loadFloorObjects(this, this.sceneId, 2);
@@ -78,8 +77,34 @@ class SceneOne extends Phaser.Scene {
         keyListen(this);
         attackNpc(this);
 
-        var redBox = this.add.image(399, 77, 'redBox');
 
+        var redBox = this.add.image(399, 77, 'redBox');
+        var taken = false;
+        redBox.setInteractive();
+        redBox.on('pointerup', () =>{
+            if(isClose(redBox, 50, 'object') && !taken) {
+                addToInv(3, this, 2);
+                var invSlot = gameState.latestInv;
+                var success = gameState.invSuccess;
+                if (success) {
+                    taken = true;
+                    redBox.visible = false;
+                    gameState.emptyBox = this.add.image(399, 77, 'emptyBox')
+                    this.time.delayedCall(7500, ()=> {
+                        gameState.emptyBox.visible = false;
+                        redBox.visible = true;
+                    });
+                    invSlots[2].on('pointerup', function () {
+                        gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
+                        itemHandler(gameState.itemClicked, invSlot, this)
+                    });
+                }
+            } else if (!taken) {
+                console.log("%cNot close enough", conCre)
+            } else {
+                console.log("%cAlready taken", conCre);
+            }
+        });
         
 
         const debugGraphics = this.add.graphics().setAlpha(0);        
