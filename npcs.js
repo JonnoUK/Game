@@ -1,6 +1,6 @@
 /* [0:'Name', 1:XLoc, 2:YLoc, 3:Scale, 4:Range, 5:WayToFace, 6:SpriteFacing, 7:AttPower, 8:Health, 9:'Scene', 10:Aggressive Bool, 11:Can-Be-Attacked Bool, 12:Normal Att Bool]  */
 var bosses = [
-    ['boss1', 450, 250, 1.2, 50, 'left', 'right', 0.5, 20, 'SceneOne', false, true, true],
+    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 20, 'SceneOne', true, true, true],
 ];
 
 /* Loads NPCs into scene and assigns attributes */
@@ -216,11 +216,11 @@ function npcUpdates() {
                 chasePlayer(npc, 1, npc.range);
                 npc.move += 1;
             } else if (npc.alive === true) {
-                    if (npc.move >= 500){
+                    /*if (npc.move >= 1000){
                         npc.x = bosses[i][1];
                         npc.y = bosses[i][2];
                         npc.aggressive = bosses[i][10]
-                    }
+                    }*/
                 npc.play('idleBoss', true);
                 npc.setVelocityX(0);
                 npc.setVelocityY(0);

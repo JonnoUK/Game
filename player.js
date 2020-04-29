@@ -40,7 +40,6 @@ function loadPlayer(game, scene, stage) {
     }
     /*CREATE FUNCTION BELOW MAP*/
     if(stage == 2) {
-        console.log("%cLoading Player below 'On Top' map layer", conCre)
         gameState.player = game.physics.add.sprite(gameState.xloc, gameState.yloc, 'player').setScale(1.2);
         console.log("%cLoaded Player below 'On Top' map layer", conCom)
         gameState.player.speed = 100;
@@ -48,7 +47,6 @@ function loadPlayer(game, scene, stage) {
     }
     /*CREATE FUNCTION GENERIC*/
     if(stage == 3) {
-        console.log("%cSetting player attributes", conCre)
         gameState.player.setCollideWorldBounds(true);
 
         game.cameras.main.startFollow(gameState.player, true);
@@ -64,34 +62,32 @@ function loadPlayer(game, scene, stage) {
         gameState.playerDisplay = game.add.image(5, 5, 'healthEmpty').setScrollFactor(0).setScale(0.5).setOrigin(0,0);
         gameState.playerDisplay = game.add.image(5, 5, 'healthFull').setScrollFactor(0).setScale(0.5).setOrigin(0, 0);
 
+        gameState.playerMessage = game.add.text(5, 300, "", {fontSize: 10, color: 'white' }).setScrollFactor(0);
+        gameState.playerMessage.setStroke('0x000000', 3)
+        gameState.playerMessage.setAlpha(0);
+
         //gameState.playerDisplay = game.add.text(200, 200).setScrollFactor(0).setFontSize(10).setColor('#fcba03');
         game.physics.add.collider(gameState.player, gameState.clipped);
-        console.log("%cLoaded player attributes", conCom);
         gameState.player.direction = 'right';
-
-
         /*CLICK FUNCTION*/
         /*
         game.input.on('pointerup', function() {
             itemHandler(event.clientX, event.clientY, game)
         });
         //*/
- 
         loadInventory(game);
+        console.log("%cLoaded player attributes", conCom);
     }
 }
 
 function loadInventory(game) {
-        console.log("%cLoading Inventory", conCre)
         /*LOAD IN SWORD IN INVENTORY*/
         inventory[0][0] = 1;
         inventory[0][1] = 1;
-        console.log("%cSet Sword in variables", conCre);
         //invSlots[1] = game.add.sprite(20, 50, 'item1').setScrollFactor(0);
 
         invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], items[inventory[0][0]]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
-        console.log("%cAdded Sword", conCom)
 
 
         /*SET BLANK SPRITES IN INVENTORY*/
@@ -105,3 +101,5 @@ function loadInventory(game) {
         invSlots[5].visible = false;
         console.log("%cLoaded Inventory", conCom)
 }
+
+
