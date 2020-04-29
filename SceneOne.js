@@ -13,7 +13,8 @@ class SceneOne extends Phaser.Scene {
 
         loadNPCs(this, this.sceneId, 1);
         loadPlayer(this, this.sceneId, 1);
-        loadFloorObjects(this, this.sceneId, 1);
+        loadFloorItems(this, this.sceneId, 1);
+        loadObjects(this, 1);
 
         this.load.tilemapTiledJSON('map', 'assets/Map/NewestMap.json');
         //this.load.image('trees', 'assets/tree.png');
@@ -21,8 +22,7 @@ class SceneOne extends Phaser.Scene {
         this.load.image('Castle2', 'assets/Map/Castle2.png', {frameWidth: 32, frameHeight: 32});
         this.load.image('tiles3', 'assets/Map/tree-variations.png', {frameWidth: 32, frameHeight: 32});
 
-        this.load.image('redBox', 'assets/redBox.png');
-        this.load.image('emptyBox', 'assets/emptyBox.png');
+
 
         console.log("%cFinished loading map in PreLoad",conCre)
     }
@@ -68,8 +68,9 @@ class SceneOne extends Phaser.Scene {
 
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
-        loadFloorObjects(this, this.sceneId, 2);
+        loadFloorItems(this, this.sceneId, 2);
         loadPlayer(this, this.sceneId, 3);
+        loadObjects(this, 2);
         
         /*HANDLE ITEM OVERLAPS AND CLICKS*/
         handleItems(this);
@@ -78,33 +79,7 @@ class SceneOne extends Phaser.Scene {
         attackNpc(this);
 
 
-        var redBox = this.add.image(399, 77, 'redBox');
-        var taken = false;
-        redBox.setInteractive();
-        redBox.on('pointerup', () =>{
-            if(isClose(redBox, 50, 'object') && !taken) {
-                addToInv(3, this, 2);
-                var invSlot = gameState.latestInv;
-                var success = gameState.invSuccess;
-                if (success) {
-                    taken = true;
-                    redBox.visible = false;
-                    gameState.emptyBox = this.add.image(399, 77, 'emptyBox')
-                    this.time.delayedCall(7500, ()=> {
-                        gameState.emptyBox.visible = false;
-                        redBox.visible = true;
-                    });
-                    invSlots[2].on('pointerup', function () {
-                        gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
-                        itemHandler(gameState.itemClicked, invSlot, this)
-                    });
-                }
-            } else if (!taken) {
-                console.log("%cNot close enough", conCre)
-            } else {
-                console.log("%cAlready taken", conCre);
-            }
-        });
+    
         
 
         const debugGraphics = this.add.graphics().setAlpha(0);        

@@ -24,24 +24,27 @@ function addToInv(object, game, indId) {
         }
     }
     if (gameState.invSuccess == true) {
-        onFloorObj[indId].destroy();
-        console.log("%cDeleted Item from floor Id: "+indId, conCre)
+        var invSlot = gameState.latestInv;
+        invSlots[gameState.itemIds].on('pointerup', function () {
+            gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
+            itemHandler(gameState.itemClicked, invSlot, game)
+        });
+        gameState.itemIds += 1;
+        sendMessage("You add a Health Potion to inventory", game);
         console.log("%cAdded to inventory: "+gameState.invSuccess+"\n"+object, conCom);
     }
 }
 
 /*LOADS IN FLOOR OBJECTS*/
-function loadFloorObjects(game, scene, stage) {
+function loadFloorItems(game, scene, stage) {
     /*PRELOAD FUNCTIONS*/
     if(stage == 1) {
-        console.log("%cLoading "+ onFloor.length +" Floor Objects", conCre)
-        for(var i =0; i < onFloor.length; i++) {
-            var ObjScene = onFloor[i][3];
-            var ObjName = onFloor[i][0];
-            if(ObjScene == scene) {
+        console.log("%cLoading "+ items.length +" Floor Objects", conCre)
+        for(var i =1; i < items.length; i++) {
+            var ObjName = items[i];
                 game.load.image(ObjName, 'assets/Inventory/'+ObjName+'.png');
-            }
         }
+        gameState.itemIds = 2;
         console.log("%cFinished loading "+ i +" Floor Objects", conCom)
     }
     /*CREATE FUNCTIONS*/
@@ -50,13 +53,11 @@ function loadFloorObjects(game, scene, stage) {
         for(var i =0; i < onFloor.length; i++) {
             var ObjScene = onFloor[i][3];
             var ObjName = onFloor[i][0];
-            if(onFloor[i][3] == scene) {
                 if(onFloor[i][5] == true) {
                     onFloorObj[i+1] = game.physics.add.sprite(onFloor[i][1], onFloor[i][2], onFloor[i][0]);
                     onFloorObj[i+1].setInteractive();
                     console.log("%cCreated "+onFloor[i][0]+" on the floor at "+onFloor[i][1]+"/"+onFloor[i][2]+ "\n with ID: "+(i+1), conCom)
                 }
-            }
         }
     }
 }
@@ -75,10 +76,11 @@ function handleItems(game) {
 
 if(onFloorObj[2] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[2],  () => {
-        addToInv(2, game, 2);
+        addToInv(2, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;
         if (success) {
+            onFloorObj[2].destroy();
         invSlots[2].on('pointerup', function () {
             gameState.itemClicked = items[ [inventory[invSlot][0]] [0] ];
             itemHandler(gameState.itemClicked, invSlot, game)
@@ -89,7 +91,7 @@ if(onFloorObj[2] != undefined){
 
 if(onFloorObj[3] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[3],  () => {
-        addToInv(3, game, 3);
+        addToInv(3, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;
         if (success) {
@@ -102,7 +104,7 @@ if(onFloorObj[3] != undefined){
 }
 if(onFloorObj[4] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[4],  () => {
-        addToInv(4, game, 4);
+        addToInv(4, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;
         if (success) {
@@ -128,7 +130,7 @@ if(onFloorObj[5] != undefined){
 }
 if(onFloorObj[6] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[6],  () => {
-        addToInv(2, game, 6);
+        addToInv(2, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;
         if (success) {
@@ -141,7 +143,7 @@ if(onFloorObj[6] != undefined){
 }
 if(onFloorObj[7] != undefined){
     game.physics.add.overlap(gameState.player, onFloorObj[7],  () => {
-        addToInv(2, game, 7);
+        addToInv(2, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;
         if (success) {
@@ -159,8 +161,6 @@ if(onFloorObj[7] != undefined){
 function itemHandler(clicked, slot, game) {
     if (clicked == 'item1') {
 
-        
-
     } else if (clicked == 'item2') {
     
         destroyItem(2, slot);
@@ -168,8 +168,10 @@ function itemHandler(clicked, slot, game) {
         if(gameState.hitpoints < 100) {
             gameState.hitpoints = 100;
             destroyItem(3, slot);
+            sendMessage("You feel a rush and your hitpoints are restored to full!", game)
             //console.log("Player hitpoints restored");
         } else {
+            sendMessage("This will restore your hitpoints when most needed.", game)
             console.log("This item will restore your hitpoints")
         }
     } else {

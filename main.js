@@ -61,6 +61,24 @@ function keyListen(game) {
      
 }
 
+function sendMessage(string, game) {
+    gameState.playerMessage.setText(string);
+    game.tweens.add({
+        targets: gameState.playerMessage,
+        alpha: 1,
+        duration: 300,
+        ease: 'Power2'
+      }, game);
+        game.time.delayedCall(3500, ()=> {
+            game.tweens.add({
+                targets: gameState.playerMessage,
+                alpha: 0,
+                duration: 1000,
+                ease: 'Power2'
+              }, game);
+        });
+}
+
 
 const gameState = {
 
@@ -79,8 +97,8 @@ var inventory =[
    /*itemName (sprite), XLoc, YLoc, Scene, itemId, visible*/
 var onFloor = [
     ['item1', 100, 150, 'SceneOne', 1, false],
-    ['item2', 100, 200, 'SceneOne', 2, true],
-    ['item3', 100, 250, 'SceneOne', 3, true],
+    ['item2', 100, 200, 'SceneOne', 2, false],
+    ['item3', 100, 250, 'SceneOne', 3, false],
 ]
 
 var items = [
@@ -120,6 +138,6 @@ var player;
 var npcId = new Object();
 var onFloorObj = new Object();
 var invSlots = new Object();
-
+var gameObject = new Object();
 
 const game = new Phaser.Game(config);
