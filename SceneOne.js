@@ -10,37 +10,63 @@ class SceneOne extends Phaser.Scene {
     preload() {
         gameState.xloc = 250;
         gameState.yloc = 250;
+
         loadNPCs(this, this.sceneId, 1);
         loadPlayer(this, this.sceneId, 1);
         loadFloorObjects(this, this.sceneId, 1);
 
-        this.load.tilemapTiledJSON('map', 'assets/Map.json');
-        this.load.image('tiles', 'assets/tiles.png', {frameWidth: 16, frameHeight: 16});
+        this.load.tilemapTiledJSON('map', 'assets/Map/NewestMap.json');
+        //this.load.image('trees', 'assets/tree.png');
+        this.load.image('ground_tiles', 'assets/Map/ground_tiles.png', {frameWidth: 32, frameHeight: 32});
+        this.load.image('Castle2', 'assets/Map/Castle2.png', {frameWidth: 32, frameHeight: 32});
+        this.load.image('tiles3', 'assets/Map/tree-variations.png', {frameWidth: 32, frameHeight: 32});
+
+        this.load.image('redBox', 'assets/redBox.png');
+
+        console.log("%cFinished loading map in PreLoad",conCre)
     }
 
     create() {
         /* LOAD MAP */
         gameState.cursors = this.input.keyboard.createCursorKeys();
+        console.log("%cCreating Map",conCre)
         map = this.make.tilemap({key: 'map'});
-        const groundTiles = map.addTilesetImage('tiles');
-        var interactive = map.createDynamicLayer('Interactive', groundTiles, 0, 0);
-        var backgroundLayer = map.createStaticLayer('Background', groundTiles, 0, 0);
-        var terrain = map.createStaticLayer('Terrain', groundTiles, 0, 0);
+        console.log("%cFinished creating map",conCom)
+        const groundTiles = map.addTilesetImage('ground_tiles');
+        const castleTiles = map.addTilesetImage('Castle2');
+        const trees = map.addTilesetImage('tiles3');
+
+ 
+        console.log("%cFinished defining tile types",conCom)
+ 
+        //var Layer2 = map.createDynamicLayer('Layer2', trees, 0, 0);
         gameState.clipped = map.createDynamicLayer('Clipped', groundTiles, 0, 0);
         gameState.clipped.setCollisionByProperty({collides: true});
-        var fade1 = map.createStaticLayer('Fade1', groundTiles, 0, 0);
-        var fade2 = map.createStaticLayer('Fade2', groundTiles, 0, 0);
-        var fade3 = map.createStaticLayer('Fade3', groundTiles, 0, 0);
-        fade1.setCollisionByProperty({collides: true});
-        fade2.setCollisionByProperty({collides: true});
-        fade3.setCollisionByProperty({collides: true});
+
+
+        var backgroundLayer = map.createStaticLayer('Background', groundTiles, 0, 0);
+        console.log("%cFinished defining background",conCom)
+
+        var layer1 = map.createStaticLayer('Layer1', castleTiles, 0, 0);
+        console.log("%cFinished defining Layer1",conCom)
+
+
+
+        console.log("%cFinished defining clipped",conCom)
+
+
 
         /* LOAD SPRITES BELOW 'ON TOP' LAYER OF MAP*/
         loadPlayer(this, this.sceneId, 2);
         loadNPCs(this, this.sceneId, 2);
 
+        var onTop1 = map.createStaticLayer('OnTop1', castleTiles, 0, 0);
+        var onTop2 = map.createStaticLayer('OnTop2', castleTiles, 0, 0);
+        var onTop3 = map.createStaticLayer('OnTop3', castleTiles, 0, 0);
+        console.log("%cFinished defining map layers",conCom)
+
         /*LOAD FINAL LAYER OF MAP*/
-        var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
+        //var OnTop = map.createStaticLayer('OnTop', groundTiles, 0, 0);
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
         loadFloorObjects(this, this.sceneId, 2);
@@ -52,7 +78,11 @@ class SceneOne extends Phaser.Scene {
         keyListen(this);
         attackNpc(this);
 
-        const debugGraphics = this.add.graphics().setAlpha(0.5);        
+        var redBox = this.add.image(399, 77, 'redBox');
+
+        
+
+        const debugGraphics = this.add.graphics().setAlpha(0);        
     
         gameState.clipped.renderDebug(debugGraphics, {
             tileColor: null, // Color of non-colliding tiles

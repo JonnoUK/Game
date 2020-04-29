@@ -77,18 +77,22 @@ function loadInventory(game) {
         /*LOAD IN SWORD IN INVENTORY*/
         inventory[0][0] = 1;
         inventory[0][1] = 1;
-        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], objects[inventory[0][0]][0]).setScrollFactor(0);
+        console.log("%cSet Sword in variables", conCre);
+        //invSlots[1] = game.add.sprite(20, 50, 'item1').setScrollFactor(0);
+
+        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], items[inventory[0][0]]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
+        console.log("%cAdded Sword", conCom)
 
 
         /*SET BLANK SPRITES IN INVENTORY*/
-        invSlots[2] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[2] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
         invSlots[2].visible = false;
-        invSlots[3] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[3] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
         invSlots[3].visible = false;
-        invSlots[4] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[4] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
         invSlots[4].visible = false;
-        invSlots[5] = game.add.sprite(0,0, objects[inventory[0][0]][0]).setScrollFactor(0);
+        invSlots[5] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
         invSlots[5].visible = false;
         console.log("%cLoaded Inventory", conCom)
 }

@@ -50,7 +50,6 @@ function loadNPCs(game, scene, stage) {
                         npc.direction = 'right';
                     }
                 }
-
                 npc.attPower = bosses[i][7];
                 npc.health = bosses[i][8];
                 /* 9 HANDLED SEPERATELY*/
@@ -61,13 +60,9 @@ function loadNPCs(game, scene, stage) {
                 npc.canAttack = true;
                 npc.alive = true;
                 npc.attacking = false;
-
-
                 npc.setInteractive();
                 npc.move = 0;
                 game.physics.add.collider(npc, gameState.clipped);
-
-
             }
         }
     }

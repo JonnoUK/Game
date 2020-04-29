@@ -20,6 +20,7 @@ class MainScreen extends Phaser.Scene {
 }
 
 
+
 var conErr = [
     'background-color: red',
     'color: black',
@@ -74,6 +75,29 @@ var inventory =[
     [0,0],
     [0,0]
    ]
+
+   /*itemName (sprite), XLoc, YLoc, Scene, itemId, visible*/
+var onFloor = [
+    ['item1', 100, 150, 'SceneOne', 1, false],
+    ['item2', 100, 200, 'SceneOne', 2, true],
+    ['item3', 100, 250, 'SceneOne', 3, true],
+]
+
+var items = [
+    'empty',
+    'item1',
+    'item2',
+    'item3', 
+    'item4', 
+    'item5']
+
+var slots = [
+    [15, 30],
+    [35, 30],
+    [55, 30],
+    [75, 30],
+    [95, 30]
+]
 
 const config = {
     type: Phaser.AUTO,

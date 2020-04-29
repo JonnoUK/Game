@@ -45,8 +45,9 @@ function playerUpdates(game) {
     
     
     /** Player Controls */
-    if(gameState.cursors.shift.isDown){
+    if (Phaser.Input.Keyboard.JustDown(gameState.cursors.shift)){
         console.log(inventory)
+        console.log(gameState.player.x + " / " + gameState.player.y)
     }
 
 
