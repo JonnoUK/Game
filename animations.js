@@ -43,7 +43,13 @@ function createAnims(game) {
     });
     game.anims.create({
         key: 'idleBoss',
-        frames: [{key: 'boss1', frame: 'sprite1'}],
+        frames: game.anims.generateFrameNames('boss1Idle', {prefix: 'sprite', start: 1, end: 2, zeroPad: 0}),
+        frameRate: 1,
+        repeat: -1
+    });
+    game.anims.create({
+        key: 'boss1Death',
+        frames: game.anims.generateFrameNames('boss1Death', {prefix: 'sprite0', start: 1, end: 40, zeroPad: 0}),
         frameRate: 10,
         repeat: -1
     });

@@ -13,7 +13,7 @@ function gameUpdateLogic(game, scene) {
         gameState.gameActive = false;
     }
 
-    npcUpdates();
+    npcUpdates(game);
     playerUpdates(game);
 
 

@@ -162,7 +162,6 @@ function itemHandler(clicked, slot, game) {
     if (clicked == 'item1') {
 
     } else if (clicked == 'item2') {
-    
         destroyItem(2, slot);
     } else if (clicked == 'item3') {
         if(gameState.hitpoints < 100) {
