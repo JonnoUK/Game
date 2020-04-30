@@ -1,6 +1,6 @@
 /* [0:'Name', 1:XLoc, 2:YLoc, 3:Scale, 4:Range, 5:WayToFace, 6:SpriteFacing, 7:AttPower, 8:Health, 9:'Scene', 10:Aggressive Bool, 11:Can-Be-Attacked Bool, 12:Normal Att Bool]  */
 var bosses = [
-    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 20, 'SceneOne', true, true, true],
+    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 2, 'SceneOne', true, true, true],
 ];
 
 /* Loads NPCs into scene and assigns attributes */
@@ -12,7 +12,9 @@ function loadNPCs(game, scene, stage) {
         for(var i =0; i < bosses.length; i++) {
             if(bosses[i][9] == scene) {
                 game.load.atlas(bosses[i][0], 'assets/NPCs/'+bosses[i][0]+'spritesheet.png', 'assets/NPCs/'+bosses[i][0]+'sprites.json');
+                game.load.atlas(bosses[i][0]+'Idle', 'assets/NPCs/'+bosses[i][0]+'Idle.png', 'assets/NPCs/'+bosses[i][0]+'Idle.json');
                 game.load.atlas(bosses[i][0]+'Att', 'assets/NPCs/'+bosses[i][0]+'Att.png', 'assets/NPCs/'+bosses[i][0]+'Att.json');
+                game.load.atlas(bosses[i][0]+'Death', 'assets/NPCs/'+bosses[i][0]+'Death.png', 'assets/NPCs/'+bosses[i][0]+'Death.json');
             }
         }
         if (i = bosses.length) {
@@ -30,7 +32,7 @@ function loadNPCs(game, scene, stage) {
                 var npc = npcId[bosses[i][0]]
                 npc.setCollideWorldBounds(true);
                 npc.range = bosses[i][4];
-
+                npc.setAlpha(1);
                 /*5 + 6 HANDLED BELOW*/
                 if(bosses[i][5] == 'left') {
                     if(bosses[i][6] == 'right') {
@@ -126,7 +128,6 @@ function attackNpc(game) {
             }
             var name = bosses[i][0]
             game.physics.add.collider(npcId[bosses[i][0]], gameState.player, () => {
-                npc.setBounce(0, 0);
                 if(npc.canAttack && npc.aggressive) {
                     npc.anims.play(name+'Att', true);
                     npc.setVelocityX(0);
@@ -201,15 +202,33 @@ function attackNpc(game) {
 }
 
 
-function npcUpdates() {
+function npcDie(npcId, game) {
+
+}
+
+function npcUpdates(game) {
     for (var i = 0; i < bosses.length; i++) {
         if (npcId[bosses[i][0]] != undefined) {
             var npc = npcId[bosses[i][0]]
 
             /** Checks if boss is still alive... */
             if(npc.alive == true && npc.health <= 0) {
-                npc.alive = false;
-                npc.destroy();
+                npc.anims.play('boss1Death', true);
+                npc.setVelocityX(0);
+                npc.setVelocityY(0);
+                game.time.delayedCall(1850, () => {
+                    game.tweens.add({
+                        targets: npc,
+                        alpha: 0,
+                        duration: 800,
+                        ease: 'Power2'
+                      }, game);
+                    game.time.delayedCall(450, () => {
+                        npc.alive = false;
+                        npc.destroy();
+                        
+                    });
+                });
             }
             /** IF CLOSE TO BOSS, AND BOSS ALIVE, CHASE. IF NOT CLOSE, DON'T MOVE. IF NOT AGGRESSIVE, DON'T MOVE*/
             if (isClose(npc, 100) && npc.alive == true && npc.aggressive) {
