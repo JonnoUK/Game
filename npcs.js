@@ -1,6 +1,6 @@
 /* [0:'Name', 1:XLoc, 2:YLoc, 3:Scale, 4:Range, 5:WayToFace, 6:SpriteFacing, 7:AttPower, 8:Health, 9:'Scene', 10:Aggressive Bool, 11:Can-Be-Attacked Bool, 12:Normal Att Bool, 13: animFadeOne, 14:animFadeTwo]  */
 var bosses = [
-    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 8, 'SceneOne', true, true, true, 1850, 450],
+    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 1, 'SceneOne', true, true, true, 1850, 450],
 ];
 
 /* Loads NPCs into scene and assigns attributes */
@@ -183,12 +183,10 @@ function attackNpc(game) {
                         npc.aggressive = true;
                         gameState.player.defending = 0;
                         gameState.player.anims.play('playAtt', true);
-                        gameState.player.setScale(1);
                         npc.health -= 2;
                         console.log("%cSuccess attack on "+name+". Health: "+npc.health, conCom)
                         game.time.delayedCall(400, ()=> {
                             gameState.attacking = false;
-                            gameState.player.setScale(1.2);
                             game.time.delayedCall(800, ()=> {
                                 gameState.player.canAttack = true;
                             });
@@ -271,7 +269,7 @@ function dropTables(npc, game) {
     var y = npc.y
     var drops = [
         ['boss1', 
-        3, 11
+        3, 11,
         ],
     ];
     var dropCalc = Math.floor((Math.random()*5) + Math.random()*5)
@@ -289,7 +287,7 @@ function dropTables(npc, game) {
                 if (drops[npcLoc][f] == 11) {
                     console.log(`%c100% chance of item ${drops[npcLoc][f-1]}.`, conCre);
                     var itemDropped = drops[npcLoc][f-1];
-                    onFloorObj[gameState.itemIds] = game.physics.add.sprite(x, y, itemDropped);
+                    onFloorObj[gameState.itemIds] = game.physics.add.sprite((x+1+Math.random()), y, itemDropped);
                     onFloorObj[gameState.itemIds].setInteractive();
                     addToFloor(gameState.itemIds, 3,  game)
                 }

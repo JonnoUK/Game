@@ -28,10 +28,16 @@ function loadPlayer(game, scene, stage) {
     /*PRELOAD FUNCTIONS*/
     if(stage == 1) {
         console.log("%cPreloading Player Assets", conCre)
-        game.load.atlas('player', 'assets/Knight/plwalk.png', 'assets/Knight/plwalk.json');
+        game.load.atlas('player', 'assets/Player/Varis_Walk.png', 'assets/Player/Varis_Walk.json');
+
+        game.load.atlas('varis_walk_sword', 'assets/Player/Varis_Walk_Sword.png', 'assets/Player/Varis_Walk_Sword.json');
+        game.load.atlas('varis_idle_sword', 'assets/Player/Varis_Idle_Sword.png', 'assets/Player/Varis_Idle_Sword.json');
+
+
+
         game.load.atlas('playAtt', 'assets/Knight/paspritesheet.png', 'assets/Knight/pasprites.json');
         game.load.atlas('plDeath', 'assets/Knight/playerDeath.png', 'assets/Knight/playerDeath.json');
-        game.load.atlas('plIdle', 'assets/Knight/plIdle.png', 'assets/Knight/plIdle.json');
+        game.load.atlas('plIdle', 'assets/Player/Varis_Idle.png', 'assets/Player/Varis_Idle.json');
         game.load.atlas('plDefend', 'assets/Knight/plDefend.png', 'assets/Knight/plDefend.json');
         game.load.image('healthEmpty', 'assets/Knight/health-bar-empty.png');
         game.load.image('healthFull', 'assets/Knight/health-bar-full.png');
@@ -40,7 +46,7 @@ function loadPlayer(game, scene, stage) {
     }
     /*CREATE FUNCTION BELOW MAP*/
     if(stage == 2) {
-        gameState.player = game.physics.add.sprite(gameState.xloc, gameState.yloc, 'player').setScale(1.2);
+        gameState.player = game.physics.add.sprite(gameState.xloc, gameState.yloc, 'player').setScale(1);
         console.log("%cLoaded Player below 'On Top' map layer", conCom)
         gameState.player.speed = 100;
         gameState.player.canAttack = true;
@@ -85,7 +91,7 @@ function loadPlayer(game, scene, stage) {
 
         gameState.emitter = gameState.particles.createEmitter({
             quantity: 10,
-            speed: 100,
+            speed: .01,
             lifespan: 750,
             scale: 0.015,
             on: false,
@@ -95,15 +101,11 @@ function loadPlayer(game, scene, stage) {
 }
 
 function loadInventory(game) {
-        /*LOAD IN SWORD IN INVENTORY*/
-        inventory[0][0] = 1;
-        inventory[0][1] = 1;
-        //invSlots[1] = game.add.sprite(20, 50, 'item1').setScrollFactor(0);
 
-        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], items[inventory[0][0]][0]).setScrollFactor(0);
-        invSlots[1].setInteractive(); 
 
         /*SET BLANK SPRITES IN INVENTORY*/
+        invSlots[1] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
+        invSlots[1].visible = false;
         invSlots[2] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
         invSlots[2].visible = false;
         invSlots[3] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);
@@ -114,5 +116,7 @@ function loadInventory(game) {
         invSlots[5].visible = false;
         console.log("%cLoaded Inventory", conCom)
 }
+
+
 
 

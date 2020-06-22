@@ -79,7 +79,7 @@ class SceneOne extends Phaser.Scene {
     
         
 
-        const debugGraphics = this.add.graphics().setAlpha(0);        
+        const debugGraphics = this.add.graphics().setAlpha(1);        
     
         gameState.clipped.renderDebug(debugGraphics, {
             tileColor: null, // Color of non-colliding tiles
