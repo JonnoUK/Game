@@ -1,6 +1,6 @@
-/* [0:'Name', 1:XLoc, 2:YLoc, 3:Scale, 4:Range, 5:WayToFace, 6:SpriteFacing, 7:AttPower, 8:Health, 9:'Scene', 10:Aggressive Bool, 11:Can-Be-Attacked Bool, 12:Normal Att Bool]  */
+/* [0:'Name', 1:XLoc, 2:YLoc, 3:Scale, 4:Range, 5:WayToFace, 6:SpriteFacing, 7:AttPower, 8:Health, 9:'Scene', 10:Aggressive Bool, 11:Can-Be-Attacked Bool, 12:Normal Att Bool, 13: animFadeOne, 14:animFadeTwo]  */
 var bosses = [
-    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 2, 'SceneOne', true, true, true],
+    ['boss1', 688, 170.5, 1.5, 75, 'left', 'right', 0.7, 8, 'SceneOne', true, true, true, 1850, 450],
 ];
 
 /* Loads NPCs into scene and assigns attributes */
@@ -30,6 +30,7 @@ function loadNPCs(game, scene, stage) {
             if(bosses[i][9] == scene) {
                 npcId[bosses[i][0]] = game.physics.add.sprite(bosses[i][1], bosses[i][2], bosses[i][0]).setScale(bosses[i][3]);
                 var npc = npcId[bosses[i][0]]
+                npc.name = bosses[i][0];
                 npc.setCollideWorldBounds(true);
                 npc.range = bosses[i][4];
                 npc.setAlpha(1);
@@ -52,6 +53,8 @@ function loadNPCs(game, scene, stage) {
                         npc.direction = 'right';
                     }
                 }
+                npc.animFadeOne = bosses[i][13];
+                npc.animFadeTwo = bosses[i][14];
                 npc.attPower = bosses[i][7];
                 npc.health = bosses[i][8];
                 /* 9 HANDLED SEPERATELY*/
@@ -62,6 +65,10 @@ function loadNPCs(game, scene, stage) {
                 npc.canAttack = true;
                 npc.alive = true;
                 npc.attacking = false;
+                npc.healthBar = game.add.image(npc.x, npc.y-150, 'healthEmpty').setScale(0.1);
+                npc.healthBar = game.add.image(npc.x, npc.y-150, 'healthFull').setScale(0.1);
+
+                //npc.healthBar = game.add.text(npc.x-20, npc.y-20, "", {fontSize: 10, color: 'red' });
                 npc.setInteractive();
                 npc.move = 0;
                 game.physics.add.collider(npc, gameState.clipped);
@@ -112,7 +119,6 @@ function chasePlayer(npcId) {
     }
 
 function attackNpc(game) {
-    
     for (var i = 0; i < bosses.length; i++) {
         if (npcId[bosses[i][0]] != undefined) {
             var npc = npcId[bosses[i][0]]
@@ -138,12 +144,13 @@ function attackNpc(game) {
                             var defence = gameState.player.defending
                             var power = npc.attPower
                             var damage = (defence)/(Math.random()*100+85)  * power
-                            console.log("%cSuccess defence against "+name+".", conCom)
                             if(defence == 0 || !facing) {
                                 damage = (Math.random()+1)*power
+                            } else {
+                                //console.log("%cSuccess defence against "+name+".", conCom)
                             }
                             gameState.hitpoints -= damage*20
-                            console.log("%cTaken damage against "+name+". Damage taken: "+Math.round(damage*20)+".", conCom)
+                            //console.log("%cTaken damage against "+name+". Damage taken: "+Math.round(damage*20)+".", conCom)
                         }
                         npc.canAttack = false;
                         damage = 0
@@ -201,34 +208,40 @@ function attackNpc(game) {
     }
 }
 
-
-function npcDie(npcId, game) {
-
+function npcDeath(npc, game) {
+    npc.alive = false;
+    npc.anims.play(`${npc.name}Death`, true);
+    npc.setVelocityX(0);
+    npc.setVelocityY(0);
+    game.time.delayedCall(npc.animFadeOne, () => {
+        game.tweens.add({
+            targets: npc,
+            alpha: 0,
+            duration: 800,
+            ease: 'Power2'
+        }, game);
+        game.time.delayedCall(npc.animFadeTwo, () => {
+        dropTables(npc, game)
+        npc.destroy();
+        });
+     });
 }
 
 function npcUpdates(game) {
     for (var i = 0; i < bosses.length; i++) {
         if (npcId[bosses[i][0]] != undefined) {
             var npc = npcId[bosses[i][0]]
+                    /*HEALTH BAR*/
+            var displayHp = npc.health / bosses[i][8] * 300;
+            npc.healthBar.setCrop();
+            npc.healthBar.setCrop(0, 0, displayHp, 20);
 
+            //npc.healthBar.setText(npc.health);
+            npc.healthBar.setPosition(npc.x, npc.y-30);
             /** Checks if boss is still alive... */
             if(npc.alive == true && npc.health <= 0) {
-                npc.anims.play('boss1Death', true);
-                npc.setVelocityX(0);
-                npc.setVelocityY(0);
-                game.time.delayedCall(1850, () => {
-                    game.tweens.add({
-                        targets: npc,
-                        alpha: 0,
-                        duration: 800,
-                        ease: 'Power2'
-                      }, game);
-                    game.time.delayedCall(450, () => {
-                        npc.alive = false;
-                        npc.destroy();
-                        
-                    });
-                });
+                npc.healthBar.visible = false;
+                npcDeath(npc, game);
             }
             /** IF CLOSE TO BOSS, AND BOSS ALIVE, CHASE. IF NOT CLOSE, DON'T MOVE. IF NOT AGGRESSIVE, DON'T MOVE*/
             if (isClose(npc, 100) && npc.alive == true && npc.aggressive) {
@@ -250,5 +263,38 @@ function npcUpdates(game) {
 }
 
 function handleBosses(npc, game) {
+}
 
+
+function dropTables(npc, game) {
+    var x = npc.x
+    var y = npc.y
+    var drops = [
+        ['boss1', 
+        3, 11
+        ],
+    ];
+    var dropCalc = Math.floor((Math.random()*5) + Math.random()*5)
+    console.log(`%cDrop chance is calculated at: ${dropCalc}`, conCre);
+    for (var i = 0; i < drops.length; i++) {
+        if(drops[i][0] == npc.name) {
+            var npcLoc = i;
+            for (var f = 0; f < drops[npcLoc].length; f++) {
+                if(dropCalc == drops[npcLoc][f] && f % 2 == 0 ) {
+                    console.log(`%cItem being dropped is ${drops[npcLoc][f-1]}.`, conCre)
+                    var itemDropped = drops[npcLoc][f-1];
+                    onFloorObj[2] = game.physics.add.sprite(x, y, itemDropped);
+                    onFloorObj[2].setInteractive();
+                }
+                if (drops[npcLoc][f] == 11) {
+                    console.log(`%c100% chance of item ${drops[npcLoc][f-1]}.`, conCre);
+                    var itemDropped = drops[npcLoc][f-1];
+                    onFloorObj[gameState.itemIds] = game.physics.add.sprite(x, y, itemDropped);
+                    onFloorObj[gameState.itemIds].setInteractive();
+                    addToFloor(gameState.itemIds, 3,  game)
+                }
+
+            }
+        }
+    }
 }

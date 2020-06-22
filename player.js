@@ -35,8 +35,8 @@ function loadPlayer(game, scene, stage) {
         game.load.atlas('plDefend', 'assets/Knight/plDefend.png', 'assets/Knight/plDefend.json');
         game.load.image('healthEmpty', 'assets/Knight/health-bar-empty.png');
         game.load.image('healthFull', 'assets/Knight/health-bar-full.png');
+        game.load.image('spark', 'assets/Inventory/heal_particle.png');
         console.log("%cLoaded Player Assets", conCom)
-
     }
     /*CREATE FUNCTION BELOW MAP*/
     if(stage == 2) {
@@ -47,6 +47,8 @@ function loadPlayer(game, scene, stage) {
     }
     /*CREATE FUNCTION GENERIC*/
     if(stage == 3) {
+
+
         gameState.player.setCollideWorldBounds(true);
 
         game.cameras.main.startFollow(gameState.player, true);
@@ -59,8 +61,6 @@ function loadPlayer(game, scene, stage) {
         game.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         game.cameras.main.setZoom(1);
         game.physics.world.setBounds(0, 0, 2000, 1500);
-        gameState.playerDisplay = game.add.image(5, 5, 'healthEmpty').setScrollFactor(0).setScale(0.5).setOrigin(0,0);
-        gameState.playerDisplay = game.add.image(5, 5, 'healthFull').setScrollFactor(0).setScale(0.5).setOrigin(0, 0);
 
         gameState.playerMessage = game.add.text(5, 300, "", {fontSize: 10, color: 'white' }).setScrollFactor(0);
         gameState.playerMessage.setStroke('0x000000', 3)
@@ -77,6 +77,20 @@ function loadPlayer(game, scene, stage) {
         //*/
         loadInventory(game);
         console.log("%cLoaded player attributes", conCom);
+        
+        gameState.playerDisplay = game.add.image(5, 5, 'healthEmpty').setScrollFactor(0).setScale(0.5).setOrigin(0,0);
+        gameState.playerDisplay = game.add.image(5, 5, 'healthFull').setScrollFactor(0).setScale(0.5).setOrigin(0, 0);
+
+        gameState.particles = game.add.particles('spark');
+
+        gameState.emitter = gameState.particles.createEmitter({
+            quantity: 10,
+            speed: 100,
+            lifespan: 750,
+            scale: 0.015,
+            on: false,
+            rotate: { start: 0, end: 90, ease: 'Back.easeOut' },
+        });
     }
 }
 
@@ -86,9 +100,8 @@ function loadInventory(game) {
         inventory[0][1] = 1;
         //invSlots[1] = game.add.sprite(20, 50, 'item1').setScrollFactor(0);
 
-        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], items[inventory[0][0]]).setScrollFactor(0);
+        invSlots[1] = game.add.sprite(slots[0][0], slots[0][1], items[inventory[0][0]][0]).setScrollFactor(0);
         invSlots[1].setInteractive(); 
-
 
         /*SET BLANK SPRITES IN INVENTORY*/
         invSlots[2] = game.add.sprite(0,0, items[inventory[0][0]]).setScrollFactor(0);

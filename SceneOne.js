@@ -21,7 +21,7 @@ class SceneOne extends Phaser.Scene {
         this.load.image('ground_tiles', 'assets/Map/ground_tiles.png', {frameWidth: 32, frameHeight: 32});
         this.load.image('Castle2', 'assets/Map/Castle2.png', {frameWidth: 32, frameHeight: 32});
         this.load.image('tiles3', 'assets/Map/tree-variations.png', {frameWidth: 32, frameHeight: 32});
-
+        
 
 
         console.log("%cFinished loading map in PreLoad",conCre)
@@ -45,10 +45,10 @@ class SceneOne extends Phaser.Scene {
         gameState.clipped.setCollisionByProperty({collides: true});
 
 
-        var backgroundLayer = map.createStaticLayer('Background', groundTiles, 0, 0);
+        var backgroundLayer = map.createDynamicLayer('Background', groundTiles, 0, 0);
         console.log("%cFinished defining background",conCom)
 
-        var layer1 = map.createStaticLayer('Layer1', castleTiles, 0, 0);
+        var layer1 = map.createDynamicLayer('Layer1', castleTiles, 0, 0);
         console.log("%cFinished defining Layer1",conCom)
 
 
@@ -60,20 +60,17 @@ class SceneOne extends Phaser.Scene {
 
 
         /*LOAD FINAL LAYER OF MAP*/
-        var onTop1 = map.createStaticLayer('OnTop1', castleTiles, 0, 0);
-        var onTop2 = map.createStaticLayer('OnTop2', castleTiles, 0, 0);
-        var onTop3 = map.createStaticLayer('OnTop3', castleTiles, 0, 0);
+        var onTop1 = map.createDynamicLayer('OnTop1', castleTiles, 0, 0);
+        var onTop2 = map.createDynamicLayer('OnTop2', castleTiles, 0, 0);
+        var onTop3 = map.createDynamicLayer('OnTop3', castleTiles, 0, 0);
         console.log("%cFinished defining map layers",conCom)
 
 
 
         /* LOAD PLAYER AND PLAYER VARIABLES*/
         loadFloorItems(this, this.sceneId, 2);
-        loadPlayer(this, this.sceneId, 3);
         loadObjects(this, 2);
         
-        /*HANDLE ITEM OVERLAPS AND CLICKS*/
-        handleItems(this);
 
         keyListen(this);
         attackNpc(this);
@@ -97,8 +94,12 @@ class SceneOne extends Phaser.Scene {
         });*/
 
         createAnims(this);
+        this.cameras.main.roundPixels = true;
+        loadPlayer(this, this.sceneId, 3);
 
-        
+
+
+        //test(this);
     }
 
 update() {

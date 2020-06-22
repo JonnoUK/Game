@@ -15,12 +15,12 @@ function gameUpdateLogic(game, scene) {
 
     npcUpdates(game);
     playerUpdates(game);
-
-
+    
     /** LOSE CONDITION */
 } else {
 
     game.physics.pause();
+    game.anims.pauseAll();
     gameState.player.body.setVelocityX(0)
     gameState.player.body.setVelocityY(0)
     /** Waits for Space Input */
@@ -49,8 +49,6 @@ function playerUpdates(game) {
         console.log(inventory)
         console.log(gameState.player.x + " / " + gameState.player.y)
     }
-
-
 
 
     if(gameState.leftA.isDown){
