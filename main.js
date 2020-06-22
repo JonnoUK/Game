@@ -6,19 +6,9 @@ class MainScreen extends Phaser.Scene {
     create() {
             gameState.hitpoints = 100;
             this.scene.stop();        
-            
-              // Once the page is loaded, disable the right click menu of the canvas.
-
-
-            
             this.scene.start('SceneOne')
-
-            
-
-
     }
 }
-
 
 
 var conErr = [
@@ -43,40 +33,37 @@ var conCom = [
 ].join(';');
 
 
-
-
 function render() {
     console.log("Creating Debug Camera")
     game.debug.cameraInfo(game.camera, 32, 32);
 }
 
 function keyListen(game) {
-
     gameState.upW = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     gameState.leftA = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     gameState.downS = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     gameState.rightD = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-
-     
 }
 
 function sendMessage(string, game) {
-    gameState.playerMessage.setText(string);
+    clearTimeout(gameState.messageTimer);
+    gameState.playerMessage.setText(string);   
+    gameState.messageTime++;     
     game.tweens.add({
         targets: gameState.playerMessage,
         alpha: 1,
         duration: 300,
         ease: 'Power2'
-      }, game);
-        game.time.delayedCall(3500, ()=> {
-            game.tweens.add({
-                targets: gameState.playerMessage,
-                alpha: 0,
-                duration: 1000,
-                ease: 'Power2'
-              }, game);
-        });
+    }, game);
+    gameState.messageTimer = setTimeout( function(){
+        game.tweens.add({
+            targets: gameState.playerMessage,
+            alpha: 0,
+            duration: 1000,
+            ease: 'Power2'
+        }, game);
+        gameState.messageTime = 1;
+    }, 3500);
 }
 
 
@@ -96,18 +83,21 @@ var inventory =[
 
    /*itemName (sprite), XLoc, YLoc, Scene, itemId, visible*/
 var onFloor = [
-    ['item1', 100, 150, 'SceneOne', 1, false],
-    ['item2', 100, 200, 'SceneOne', 2, false],
-    ['item3', 100, 250, 'SceneOne', 3, false],
+    ['1', 100, 150, 'SceneOne', 1, false],
+    ['2', 100, 200, 'SceneOne', 2, false],
+    ['3', 100, 250, 'SceneOne', 3, false],
 ]
 
 var items = [
-    'empty',
-    'item1',
-    'item2',
-    'item3', 
-    'item4', 
-    'item5']
+    ['empty'],
+    ['1', 'Sword', 'To defeat monsters'], 
+    ['2', 'Strength Potion', 'This will increase my strength by 10%.'],
+    ['3', 'Health Potion', 'This will restore your hitpoints when most needed.'], 
+    ['4'], 
+    ['5']
+]
+
+
 
 var slots = [
     [15, 30],
