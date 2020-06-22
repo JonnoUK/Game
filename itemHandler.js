@@ -37,6 +37,19 @@ function addToInv(object, game, indId) {
     if (gameState.invSuccess == true) {
         //the inventory we went into...
         var invSlot = gameState.latestInv;
+
+
+
+        //Conditions on certain items being successfully picked up
+
+        switch(object) {
+            case 1:
+                playerState.sword = true;
+                
+
+        }
+
+
         //wait for the click on inventory....
         invSlots[gameState.itemIds].on('pointerup', function () {
             //set the item clicked
@@ -64,7 +77,6 @@ function loadFloorItems(game, scene, stage) {
             var ObjName = items[i][0];
             game.load.image(ObjName, 'assets/Inventory/'+ObjName+'.png');
         }
-        gameState.itemIds = 2;
         console.log("%cFinished loading "+ i +" Floor Objects", conCom)
     }
     /*CREATE FUNCTIONS*/
@@ -75,6 +87,7 @@ function loadFloorItems(game, scene, stage) {
                 if(onFloor[i][5] == true) {
                     onFloorObj[i+1] = game.physics.add.sprite(onFloor[i][1], onFloor[i][2], onFloor[i][0]);
                     onFloorObj[i+1].setInteractive();
+                    addToFloor(ObjName, onFloor[i][4], game);
                     console.log("%cCreated "+onFloor[i][0]+" on the floor at "+onFloor[i][1]+"/"+onFloor[i][2]+ "\n with ID: "+(i+1), conCom)
                 }
         }
@@ -92,6 +105,7 @@ gameState.itemClicked = '';
 
 function addToFloor(id, item, game) {
     game.physics.add.overlap(gameState.player, onFloorObj[id],  () => {
+        console.log(item);
         addToInv(item, game, gameState.itemIds);
         var invSlot = gameState.latestInv;
         var success = gameState.invSuccess;

@@ -38,11 +38,16 @@ function render() {
     game.debug.cameraInfo(game.camera, 32, 32);
 }
 
+let playerInput = {
+
+}
+
+
 function keyListen(game) {
-    gameState.upW = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    gameState.leftA = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    gameState.downS = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    gameState.rightD = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    playerInput["1"] = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    playerInput["2"] = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    playerInput["3"] = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    playerInput["4"] = game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 }
 
 function sendMessage(string, game) {
@@ -67,10 +72,18 @@ function sendMessage(string, game) {
 }
 
 
-const gameState = {
+var gameState = {
 
     
 }
+
+let playerState = {
+    normalWalk: true,
+    sword: false,
+
+
+}
+
 
 
 var inventory =[
@@ -83,7 +96,7 @@ var inventory =[
 
    /*itemName (sprite), XLoc, YLoc, Scene, itemId, visible*/
 var onFloor = [
-    ['1', 100, 150, 'SceneOne', 1, false],
+    ['1', 100, 150, 'SceneOne', 1, true],
     ['2', 100, 200, 'SceneOne', 2, false],
     ['3', 100, 250, 'SceneOne', 3, false],
 ]

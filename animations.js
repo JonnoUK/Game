@@ -23,23 +23,37 @@ function createAnims(game) {
 
     game.anims.create({
         key: 'walk',
-        frames: game.anims.generateFrameNames('player', {prefix: 'sprite', start: 1, end: 8, zeroPad: 0}),
+        frames: game.anims.generateFrameNames('player', {prefix: 'Varis_Walk ', start: 0, end: 5, zeroPad: 0}),
         frameRate: 10,
         repeat: -1
     });
 
     game.anims.create({
+        key: 'varis_walk_sword',
+        frames: game.anims.generateFrameNames('varis_walk_sword', {prefix: 'Varis_Walk_Sword ', start: 0, end: 5, zeroPad: 0}),
+        frameRate: 10,
+        repeat: -1,
+    });
+
+    game.anims.create({
         key: 'idle',
-        frames: game.anims.generateFrameNames('plIdle', {prefix: 'sprite', start: 1, end: 4, zeroPad: 0}),
-        frameRate: 5,
-        repeat: -1
+        frames: game.anims.generateFrameNames('plIdle', {prefix: 'Varis_Idle ', start: 0, end: 1, zeroPad: 0}),
+        frameRate: 1,
+        repeat: 1
+    });
+
+    game.anims.create({
+        key: 'varis_idle_sword',
+        frames: game.anims.generateFrameNames('varis_idle_sword', {prefix: 'varis_Idle_Sword ', start: 0, end: 1, zeroPad: 0}),
+        frameRate: 1,
+        repeat: 1
     });
 
     game.anims.create({
         key: 'walkBoss',
         frames: game.anims.generateFrameNames('boss1', {prefix: 'sprite', start: 1, end: 7, zeroPad: 0}),
         frameRate: 10,
-        repeat: -1
+        repeat: 1
     });
     game.anims.create({
         key: 'idleBoss',
